@@ -1,7 +1,5 @@
-import json
-import requests
-
-
+import json, requests
+import user
 
 class Client:
 
@@ -9,7 +7,7 @@ class Client:
     headers = {'Content-Type': 'application/json'}
 
     @staticmethod
-    def authentication(login, password):
+    def loginPersonalAccount(login, password):
         data={
             'login': login,
             'password': password
@@ -18,3 +16,7 @@ class Client:
 
         response = requests.post(url=Client.url, data=data_json, headers=Client.headers)
         return response.text
+
+    @staticmethod
+    def createPersonalAccount(user:user.Doctor):
+        pass
