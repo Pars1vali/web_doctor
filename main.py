@@ -1,17 +1,81 @@
 import streamlit as st
-import net
+import json
+import net, user
+
+ui, ui_images = None, None
+
+def load_localization(file_name):
+    global ui
+    with open(file_name, 'r', encoding='utf-8') as file:
+        ui = json.load(file)
+
+def load_images(file_name):
+    global ui_images
+    with open(file_name, 'r', encoding='utf-8') as file:
+        ui_images = json.load(file)
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+
+def init():
+    st.image(image=ui_images["main_icno"], width=200)
+    if 'mode' not in st.session_state:
+        st.session_state['mode'] = 'none'
+
+    col1, col2 = st.columns(2)
+    with col1:
+        create_link_btn = st.button(label=ui['button']['create_link_btn'], type="primary")
+    with col2:
+        login_link_btn = st.button(label=ui['button']["login_link_btn"], type="primary")
 
 
-def print_hi(name):
-    st.title("Войти")
-    login = st.text_input(label="Логин")
-    password = st.text_input(label="Пароль", type="password")
-    login_btn = st.button(label="Войти", type="primary")
-    if(login_btn):
-        st.write(net.Client.authentication(login, password))
-        net.Client.url
+    if create_link_btn:
+        st.session_state['mode'] = 'create'
+    if login_link_btn:
+        st.session_state['mode'] = 'login'
+
+def createPassword():
+    password = st.text_input(label=ui["user"]["password"], type="password")
+    password_chesk = st.text_input(label=ui["user"]["password_chesk"], type="password")
+    if(password==password_chesk):
+        return password
+    else:
+        st.error("Пароли не совпадают")
+
+def controller():
+
+    if st.session_state['mode'] == 'login':
+        login = st.text_input(label="Логин")
+        password = st.text_input(label="Пароль", type="password",)
+        login_btn = st.button(label="Войти", type="primary")
+        if (login_btn):
+            st.write(net.Client.authentication(login, password))
+    elif st.session_state['mode'] == 'create':
+        firstname = st.text_input(label=ui["user"]["firstname"])
+        lastname = st.text_input(label=ui["user"]["lastname"])
+        surname = st.text_input(label=ui["user"]["surname"])
+        post = st.text_input(label=ui["user"]["post"])
+        organization = st.text_input(label=ui["user"]["organization"])
+        phone_number = st.text_input(label=ui["user"]["phone_number"])
+        username = st.text_input(label=ui["user"]["username"])
+        email = st.text_input(label=ui["user"]["email"])
+        password = createPassword()
+
+        all_property = all([firstname, lastname, surname, post, organization, phone_number, username, email, password])
+        crete_account_btn = st.button(label=ui["button"]["crete_account_btn"], type="primary")
+        if crete_account_btn:
+            if all_property:
+                new_user = user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password)
+            else:
+                st.error("Не все поля заполнены")
 
 
 
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    user_language = "ru"
+    local_css("resources/style.css")
+    load_localization(f"resources/ui/localization/localization_{user_language}.json")
+    load_images("resources/ui/image.json")
+    init()
+    controller()

@@ -1,0 +1,20 @@
+
+{
+  "button": {
+    "create_link_btn": "Создать",
+    "login_link_btn": "Есть аккаунт",
+    "crete_account_btn": "Зарегестрироваться"
+  },
+  "user": {
+    "firstname": "Имя",
+    "lastname": "Фамилия",
+    "surname": "Отчество",
+    "post": "Должность",
+    "organization": "Место работы",
+    "phone_number": "Номер телефона",
+    "username": "Имя пользователя",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "password_chesk": "Повторите пароль"
+  }
+}

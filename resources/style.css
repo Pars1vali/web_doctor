@@ -1,0 +1,45 @@
+.stHeadingContainer span{
+    text-align:center;
+}
+.stHeadingContainer {
+    margin-bottom:3.5%;
+}
+.stMarkdown{
+    text-align:center;
+    margin-bottom:2%;
+}
+.stMarkdown p{
+    font-size:1.2rem;
+}
+.stButton{
+    text-align: center;
+}
+.stDataFrame{
+    text-align:center;
+}
+.st-emotion-cache-ocqkz7.e1f1d6gn4 {
+    margin-bottom:1.5rem;
+}
+
+.st-emotion-cache-1kyxreq{
+    justify-content: center;
+    align-items: center;
+}
+.st-emotion-cache-6awftf{
+    visibility: hidden;
+}
+
+@media (max-width: 640px){
+.st-emotion-cache-12w0qpk {
+    min-width: calc(10% - 1.5rem);
+}
+
+.stMarkdown p {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.st-emotion-cache-16idsys p {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+}
