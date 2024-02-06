@@ -1,9 +1,16 @@
 
 {
+  "login": "Логин",
+  "password": "Пароль",
   "button": {
     "create_link_btn": "Создать",
     "login_link_btn": "Есть аккаунт",
-    "crete_account_btn": "Зарегестрироваться"
+    "crete_account_btn": "Зарегестрироваться",
+    "login_account_btn": "Войти"
+  },
+  "error": {
+    "passwords_mismatch": "Пароли не совпадают",
+    "fields_incomplete" : "Не все поля заполнены"
   },
   "user": {
     "firstname": "Имя",
