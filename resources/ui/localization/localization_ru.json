@@ -10,7 +10,11 @@
   },
   "error": {
     "passwords_mismatch": "Пароли не совпадают",
-    "fields_incomplete" : "Не все поля заполнены"
+    "fields_incomplete" : "Не все поля заполнены",
+    "account_exists": "Такой аккаунт уже существует"
+  },
+  "warning": {
+    "successful_creating_account": "Аккаунт успешно создан"
   },
   "user": {
     "firstname": "Имя",

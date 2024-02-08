@@ -1,4 +1,8 @@
 import json, requests
+
+import yaml
+
+import demo
 import user
 
 class Client:
@@ -8,6 +12,8 @@ class Client:
 
     @staticmethod
     def loginPersonalAccount(login, password):
+        Client.headers['X-Custom-Info'] = 'login_user'
+        print(Client.headers)
         data={
             'login': login,
             'password': password
@@ -19,4 +25,8 @@ class Client:
 
     @staticmethod
     def createPersonalAccount(user:user.Doctor):
-        pass
+        Client.headers['X-Custom-Info'] = 'new_user'
+
+        response = requests.post(url=Client.url, data= user.toJSON(), headers=Client.headers )
+        return  response.text
+

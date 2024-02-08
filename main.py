@@ -68,7 +68,11 @@ def controller():
         if crete_account_btn:
             if all_fields:
                 new_user = user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password)
-                net.Client.createPersonalAccount(new_user)
+                response = net.Client.createPersonalAccount(new_user)
+                if response == "false":
+                    st.warning(ui["warning"]["successful_creating_account"])
+                elif response == "true":
+                    st.error(ui["error"]["account_exists"])
             else:
                 st.error(ui["error"]["fields_incomplete"])
 
