@@ -1,8 +1,4 @@
 import json, requests
-
-import yaml
-
-import demo
 import user
 
 class Client:
