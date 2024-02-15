@@ -9,6 +9,7 @@
     "login_account_btn": "Войти"
   },
   "error": {
+    "login_or_password_incorrect": "Неверный логин или пароль",
     "passwords_mismatch": "Пароли не совпадают",
     "fields_incomplete" : "Не все поля заполнены",
     "account_exists": "Такой аккаунт уже существует"

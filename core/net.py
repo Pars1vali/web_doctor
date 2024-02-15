@@ -1,5 +1,6 @@
 import json, requests
-import user
+from core import user
+
 
 class Client:
 
@@ -20,9 +21,8 @@ class Client:
         return response.text
 
     @staticmethod
-    def createPersonalAccount(user:user.Doctor):
+    def createPersonalAccount(user: user.Doctor):
         Client.headers['X-Custom-Info'] = 'new_user'
-
         response = requests.post(url=Client.url, data= user.toJSON(), headers=Client.headers )
         return  response.text
 

@@ -1,6 +1,7 @@
 import streamlit as st
 import json
-import net, user
+
+from core import net, user
 
 ui, ui_images = None, None
 
@@ -51,7 +52,11 @@ def controller():
         password = st.text_input(label=ui["password"], type="password", key="login_password")
         login_btn = st.button(label=ui["button"]["login_account_btn"], type="primary")
         if (login_btn):
-            st.write(net.Client.loginPersonalAccount(login, password))
+
+           if net.Client.loginPersonalAccount(login, password) == "true":
+               st.switch_page('pages/account.py')
+           else:
+               st.error(ui["error"]["login_or_password_incorrect"])
     elif st.session_state['mode'] == 'create':
         firstname = st.text_input(label=ui["user"]["firstname"])
         lastname = st.text_input(label=ui["user"]["lastname"])
@@ -69,9 +74,9 @@ def controller():
             if all_fields:
                 new_user = user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password)
                 response = net.Client.createPersonalAccount(new_user)
-                if response == "false":
-                    st.warning(ui["warning"]["successful_creating_account"])
-                elif response == "true":
+                if response == "true":
+                    st.switch_page('pages/account.py')
+                elif response == "false":
                     st.error(ui["error"]["account_exists"])
             else:
                 st.error(ui["error"]["fields_incomplete"])
