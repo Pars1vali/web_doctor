@@ -10,7 +10,6 @@ class Client:
     @staticmethod
     def loginPersonalAccount(login, password):
         Client.headers['X-Custom-Info'] = 'login_user'
-        print(Client.headers)
         data={
             'login': login,
             'password': password

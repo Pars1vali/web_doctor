@@ -1,36 +1,18 @@
 import streamlit as st
-import json
-
-from core import net, user
+from core import net, user, loader
 
 ui, ui_images = None, None
 
-def _load_localization(file_name):
-    global ui
-    with open(file_name, 'r', encoding='utf-8') as file:
-        ui = json.load(file)
-def _load_images(file_name):
-    global ui_images
-    with open(file_name, 'r', encoding='utf-8') as file:
-        ui_images = json.load(file)
-def _local_css(file_name):
-    with open(file_name) as f:
-        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
 def load_resourses(file_css, file_localization, file_images):
-    _local_css(file_css)
-    _load_localization(file_localization)
-    _load_images(file_images)
-    pass
-def _createPassword():
-    password = st.text_input(label=ui["user"]["password"], type="password")
-    password_chesk = st.text_input(label=ui["user"]["password_chesk"], type="password")
-    if(password==password_chesk):
-        return password
-    else:
-        st.error(ui["error"]["passwords_mismatch"])
+    global ui, ui_images
+    with open(file_css) as f:
+        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+
+    ui = loader.load_localization(file_localization)
+    ui_images = loader.load_images(file_images)
 
 def init():
-    st.image(image=ui_images["main_icno"], width=200)
+    st.image(image=ui_images["main_icon"], width=200)
     if 'mode' not in st.session_state:
         st.session_state['mode'] = 'none'
 
@@ -40,11 +22,12 @@ def init():
     with col2:
         login_link_btn = st.button(label=ui['button']["login_link_btn"], type="primary")
 
-
     if create_link_btn:
         st.session_state['mode'] = 'create'
     if login_link_btn:
         st.session_state['mode'] = 'login'
+
+    controller()
 
 def controller():
     if st.session_state['mode'] == 'login':
@@ -52,7 +35,6 @@ def controller():
         password = st.text_input(label=ui["password"], type="password", key="login_password")
         login_btn = st.button(label=ui["button"]["login_account_btn"], type="primary")
         if (login_btn):
-
            if net.Client.loginPersonalAccount(login, password) == "true":
                st.switch_page('pages/account.py')
            else:
@@ -81,6 +63,13 @@ def controller():
             else:
                 st.error(ui["error"]["fields_incomplete"])
 
+def _createPassword():
+    password = st.text_input(label=ui["user"]["password"], type="password")
+    password_check = st.text_input(label=ui["user"]["password_chesk"], type="password")
+    if(password==password_check):
+        return password
+    else:
+        st.error(ui["error"]["passwords_mismatch"])
 
 if __name__ == '__main__':
     user_language = "ru"
@@ -88,4 +77,3 @@ if __name__ == '__main__':
                    file_localization=f"resources/ui/localization/localization_{user_language}.json",
                    file_images="resources/ui/image.json")
     init()
-    controller()
