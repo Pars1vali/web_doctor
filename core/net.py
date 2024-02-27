@@ -1,10 +1,10 @@
-import json, requests
+import json, requests, os
 from core import user
 
 
 class Client:
 
-    url = 'https://d5dam91qvmi3s9e5ngo8.apigw.yandexcloud.net/authentication'
+    url = os.getenv('SERVER_PATH')
     headers = {'Content-Type': 'application/json'}
 
     @staticmethod
