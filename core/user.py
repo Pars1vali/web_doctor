@@ -17,7 +17,6 @@ class Doctor:
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True, indent=4)
 
-
 class Client:
     def __init__(self, firstname, lastname, surname, phone_number, doctor_id, email):
         self.firstname = firstname

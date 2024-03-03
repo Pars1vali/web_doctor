@@ -33,19 +33,19 @@ def controller():
         _create()
 
 def _login():
-    with st.form("Войти"):
+    with st.form(ui["form_title"]["login"]):
         login = st.text_input(label=ui["login"])
         password = st.text_input(label=ui["password"], type="password", key="login_password")
 
         if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary")):
-            if net.Client.loginPersonalAccount(login, password) == "true":
+            if net.Doctor.login_account(login, password) == "true":
                 st.write("Вошел")
                 # st.switch_page('pages/account.py')
             else:
                 st.error(ui["error"]["login_or_password_incorrect"])
 
 def _create():
-    with st.form("Регистрация"):
+    with st.form(ui["form_title"]["registration"]):
         firstname = st.text_input(label=ui["user"]["firstname"])
         lastname = st.text_input(label=ui["user"]["lastname"])
         surname = st.text_input(label=ui["user"]["surname"])
@@ -59,7 +59,7 @@ def _create():
 
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary"):
             if all_fields:
-                response = net.Client.createPersonalAccount(
+                response = net.Doctor.create_account(
                     user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password))
                 if response == "true":
                     st.write("Вошел")

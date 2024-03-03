@@ -6,7 +6,15 @@
     "create_link_btn": "Создать",
     "login_link_btn": "Есть аккаунт",
     "crete_account_btn": "Зарегестрироваться",
-    "login_account_btn": "Войти"
+    "login_account_btn": "Войти",
+    "client": "Клиент",
+    "doctor": "Доктор"
+  },
+  "link_button": {
+    "login_google": "Войти в Google аккаунт"
+  },
+  "info": {
+    "first_registration": "Первичная регистрация"
   },
   "error": {
     "login_or_password_incorrect": "Неверный логин или пароль",
@@ -27,6 +35,16 @@
     "username": "Имя пользователя",
     "email": "Электронная почта",
     "password": "Пароль",
-    "password_chesk": "Повторите пароль"
+    "password_chesk": "Повторите пароль",
+    "doctor_id": "ID Доктора"
+  },
+  "topics": {
+    "personal_account": "Личный кабинет",
+    "welcome": "Добро пожаловать на портал",
+    "welcome_client": "Web-доктор для клиентов"
+  },
+  "form_title": {
+    "registration": "Регистрация",
+    "login": "Войти"
   }
 }

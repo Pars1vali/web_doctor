@@ -1,38 +1,43 @@
 from core import user
 import json, requests, os
 
-class Client:
+url = os.getenv('SERVER_PATH')
+headers = {'Content-Type': 'application/json'}
 
-    url = os.getenv('SERVER_PATH')
-    headers = {'Content-Type': 'application/json'}
+class Client:
+    global headers
 
     @staticmethod
-    def loginPersonalAccount(login, password):
-        Client.headers['X-Custom-Info'] = 'login_user'
-        data={
+    def login_account(email):
+        headers['X-Custom-Info'] = 'login_client'
+        data = {
+            'email': email
+        }
+        response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+
+    @staticmethod
+    def create_account(client: user.Client):
+        headers['X-Custom-Info'] = 'new_client'
+        response = requests.post(url, client.toJSON(), headers=headers)
+        return response.text
+
+class Doctor:
+    global headers
+    @staticmethod
+    def login_account(login, password):
+        headers['X-Custom-Info'] = 'login_doctor'
+        data = {
             'login': login,
             'password': password
         }
         data_json = json.dumps(data)
 
-        response = requests.post(url=Client.url, data=data_json, headers=Client.headers)
+        response = requests.post(url, data_json, headers= headers)
         return response.text
 
     @staticmethod
-    def createPersonalAccount(user: user.Doctor):
-        Client.headers['X-Custom-Info'] = 'new_user'
-        response = requests.post(url=Client.url, data= user.toJSON(), headers=Client.headers)
+    def create_account(doctor: user.Doctor):
+        headers['X-Custom-Info'] = 'new_doctor'
+        response = requests.post(url, doctor.toJSON(), headers=headers)
         return response.text
-
-    @staticmethod
-    def loginClientAccount(email):
-        Client.headers['X-Custom-Info'] = 'login_client'
-        data = {
-            'email': email
-        }
-        response = requests.post(url=Client.url, data=json.dumps(data), headers=Client.headers)
-        return response.text
-
-    @staticmethod
-    def createClientAccount(user: user.Client):
-        pass
