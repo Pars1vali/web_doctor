@@ -18,3 +18,17 @@ class Doctor:
                           sort_keys=True, indent=4)
 
 
+class Client:
+    def __init__(self, firstname, lastname, surname, phone_number, doctor_id, email):
+        self.firstname = firstname
+        self.lastname = lastname
+        self.surname = surname
+        self.phone_number = phone_number
+        self.doctor_id = doctor_id
+        self.email = email
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+
+

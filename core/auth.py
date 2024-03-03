@@ -42,13 +42,12 @@ def get_login_str():
     #return f''' < a target = "_self" href = "{authorization_url}" > Google login < /a > '''
 
 
-def display_user() -> void:
+def display_user():
     client: GoogleOAuth2 = GoogleOAuth2(CLIENT_ID, CLIENT_SECRET)
     # get the code from the url
-    code = st.experimental_get_query_params()['code']
+    code = st.query_params.get_all('code')
     token = asyncio.run(get_access_token(
         client, REDIRECT_URI, code))
     user_id, user_email = asyncio.run(
         get_email(client, token['access_token']))
-    st.write(
-        f"You're logged in as {user_email} and id is {user_id}")
+    return user_email

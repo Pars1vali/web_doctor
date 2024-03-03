@@ -1,7 +1,5 @@
-import json, requests, os
-
 from core import user
-
+import json, requests, os
 
 class Client:
 
@@ -23,6 +21,18 @@ class Client:
     @staticmethod
     def createPersonalAccount(user: user.Doctor):
         Client.headers['X-Custom-Info'] = 'new_user'
-        response = requests.post(url=Client.url, data= user.toJSON(), headers=Client.headers )
-        return  response.text
+        response = requests.post(url=Client.url, data= user.toJSON(), headers=Client.headers)
+        return response.text
 
+    @staticmethod
+    def loginClientAccount(email):
+        Client.headers['X-Custom-Info'] = 'login_client'
+        data = {
+            'email': email
+        }
+        response = requests.post(url=Client.url, data=json.dumps(data), headers=Client.headers)
+        return response.text
+
+    @staticmethod
+    def createClientAccount(user: user.Client):
+        pass
