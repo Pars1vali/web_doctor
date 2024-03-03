@@ -17,6 +17,7 @@ def get_email():
 def init():
     st.title(ui["topics"]["personal_account"])
     email = get_email()
+    st.write(email)
 
     if(net.Client.login_account(email) == 'false'):
         st.info(ui["info"]["first_registration"])
