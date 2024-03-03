@@ -1,3 +1,5 @@
 {
-  "main_icon": "resources/images/icon.png"
+  "main_icon": "resources/images/icon.png",
+  "doctors_icon": "resources/images/doctors.png",
+  "client_icon": "resources/images/client.png"
 }
