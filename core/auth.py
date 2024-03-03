@@ -9,13 +9,13 @@ from httpx_oauth.clients.google import GoogleOAuth2
 #
 # load_dotenv('.env')
 
-# CLIENT_ID = "169068403601-mshu43a5uvutk61ubberhps94r60n6p7.apps.googleusercontent.com"#os.environ['CLIENT_ID']
-# CLIENT_SECRET = "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"#os.environ['CLIENT_SECRET']
-# REDIRECT_URI = "http://localhost:8501"#os.environ['REDIRECT_URI']
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
+REDIRECT_URI = os.environ['REDIRECT_URI']
 
-CLIENT_ID = "169068403601-gt219934qaiqm1mp5b1aohf9dusk7fao.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
-REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
+# CLIENT_ID = "169068403601-gt219934qaiqm1mp5b1aohf9dusk7fao.apps.googleusercontent.com"
+# CLIENT_SECRET = "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"
+# REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
 
 
 
