@@ -9,18 +9,33 @@ from httpx_oauth.clients.google import GoogleOAuth2
 #
 # load_dotenv('.env')
 
-CLIENT_ID = os.environ['CLIENT_ID']
-CLIENT_SECRET = os.environ['CLIENT_SECRET']
-REDIRECT_URI = os.environ['REDIRECT_URI']
+# CLIENT_ID = os.environ['CLIENT_ID']
+# CLIENT_SECRET = os.environ['CLIENT_SECRET']
+# REDIRECT_URI = os.environ['REDIRECT_URI']
 
 # CLIENT_ID = "169068403601-gt219934qaiqm1mp5b1aohf9dusk7fao.apps.googleusercontent.com"
 # CLIENT_SECRET = "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"
 # REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
 
+CLIENT_ID = "169068403601-uhgrr6frls1oc1idu9v49v0dedjsla8p.apps.googleusercontent.com"
+CLIENT_SECRET = "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"
+REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
 
 
 async def get_authorization_url(client: GoogleOAuth2, redirect_uri: str):
-    authorization_url = await client.get_authorization_url(redirect_uri, scope=["profile", "email"])
+    authorization_url = await client.get_authorization_url(redirect_uri, scope=["profile",
+                                                                                "email",
+                                                                                "https://www.googleapis.com/auth/fitness.activity.read",
+                                                                                "https://www.googleapis.com/auth/fitness.blood_glucose.read",
+                                                                                "https://www.googleapis.com/auth/fitness.blood_pressure.read",
+                                                                                "https://www.googleapis.com/auth/fitness.body.read",
+                                                                                "https://www.googleapis.com/auth/fitness.body_temperature.read",
+                                                                                "https://www.googleapis.com/auth/fitness.heart_rate.read",
+                                                                                "https://www.googleapis.com/auth/fitness.location.read",
+                                                                                "https://www.googleapis.com/auth/fitness.nutrition.read",
+                                                                                "https://www.googleapis.com/auth/fitness.oxygen_saturation.read",
+                                                                                "https://www.googleapis.com/auth/fitness.reproductive_health.read",
+                                                                                "https://www.googleapis.com/auth/fitness.sleep.read"])
     return authorization_url
 
 
@@ -50,4 +65,4 @@ def display_user():
         client, REDIRECT_URI, code))
     user_id, user_email = asyncio.run(
         get_email(client, token['access_token']))
-    return user_email
+    return user_id, user_email

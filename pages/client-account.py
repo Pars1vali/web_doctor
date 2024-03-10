@@ -12,7 +12,9 @@ def load_resourses(file_style,file_localization, file_images ):
 
 @st.cache_resource
 def get_email():
-    return auth.display_user()
+    user_id, user_email = auth.display_user()
+    st.write(f"id - {user_id}")
+    return user_email
 
 def init():
     st.title(ui["topics"]["personal_account"])

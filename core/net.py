@@ -1,7 +1,8 @@
 from core import user
 import json, requests, os
 
-url = os.getenv('SERVER_PATH')
+# url = os.getenv('SERVER_PATH')
+url = "https://d5dam91qvmi3s9e5ngo8.apigw.yandexcloud.net/authentication"
 headers = {'Content-Type': 'application/json'}
 
 class Client:
