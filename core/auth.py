@@ -89,8 +89,8 @@ def get_token():
     # data = authorization_response
     # st.write(data)
     # authuser prompt code scope
-    # tokens = flow.fetch_token(authorization_response=authorization_response)
-    # st.write(tokens)
+    tokens = flow.fetch_token(authorization_response=authorization_response)
+    st.write(tokens)
     # return tokens
 
     return "developing"
