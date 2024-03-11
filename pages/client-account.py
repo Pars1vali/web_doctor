@@ -13,7 +13,6 @@ def load_resourses(file_style,file_localization, file_images ):
 @st.cache_resource
 def get_email():
     user_id, user_email, token  = auth.display_user()
-
     return user_email
 
 def get_test():
