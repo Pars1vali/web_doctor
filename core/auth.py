@@ -66,7 +66,7 @@ async def request_fit_data():
     # return jsonify(result)
 
 def get_login():
-    # flow.redirect_uri = 'https://web-doctor.streamlit.app/client-account'#'http://localhost:8501/client-account'
+    flow.redirect_uri = 'https://web-doctor.streamlit.app/client-account'#'http://localhost:8501/client-account'
     authorization_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true')
