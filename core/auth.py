@@ -84,7 +84,7 @@ def get_token():
     authuser = st.query_params.get("authuser")
     prompt = st.query_params.get("prompt")
 
-    authorization_response = f"http://localhost:8501/client-account?state={state}&code={code}&scope={scope}&authuser={authuser}&prompt={prompt}"
+    authorization_response = f"https://web-doctor.streamlit.app/client-account?state={state}&code={code}&scope={scope}&authuser={authuser}&prompt={prompt}"
     st.write(authorization_response)
     # data = authorization_response
     # st.write(data)
