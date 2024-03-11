@@ -20,28 +20,7 @@ def load_resourses():
 def init():
     st.title(ui["topics"]["welcome_client"])
     st.image(ui_images['client_icon'], width=350)
-    #<script src="https://apis.google.com/js/platform.js" async defer></script>
-    html("""
-    <html>
-      <body>
-        <script src="https://accounts.google.com/gsi/client" async></script>
-        <div id="g_id_onload"
-            data-client_id="169068403601-tubkif2prt01v1la1ecspr2me96mvi9s.apps.googleusercontent.com"
-            data-login_uri="https://web-doctor.streamlit.app/client-account"
-            data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin"
-            data-type="standard"
-            data-size="large"
-            data-theme="outline"
-            data-text="sign_in_with"
-            data-shape="rectangular"
-            data-logo_alignment="left">
-        </div>
-      <body>
-    </html>""")
-
-    st.link_button(label=ui["link_button"]["login_google"], url=auth.get_login_str(), type="primary")
+    st.link_button(label=ui["link_button"]["login_google"], url=auth.get_login(), type="primary")
 
 if(__name__ == '__main__'):
     load_resourses()

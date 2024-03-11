@@ -1,5 +1,5 @@
 from core import loader, auth, net, user
-import streamlit as st
+import streamlit as st, asyncio, json
 
 ui, ui_images = None, None
 
@@ -12,20 +12,32 @@ def load_resourses(file_style,file_localization, file_images ):
 
 @st.cache_resource
 def get_email():
-    user_id, user_email = auth.display_user()
-    st.write(f"id - {user_id}")
+    user_id, user_email, token  = auth.display_user()
+
     return user_email
+
+def get_test():
+    return auth.get_token()
+
+
+async def get_fit():
+    data = await auth.request_fit_data()
+    return data
+
+if st.button("click"):
+    asyncio.run(get_fit())
 
 def init():
     st.title(ui["topics"]["personal_account"])
-    email = get_email()
-    st.write(email)
+    # email = get_email()
+    # st.write(email)
 
-    if(net.Client.login_account(email) == 'false'):
-        st.info(ui["info"]["first_registration"])
-        _createClientAccount(email)
-    else:
-        st.write("есть аккаунт")
+    # if(net.Client.login_account(email) == 'false'):
+    #     st.info(ui["info"]["first_registration"])
+    #     _createClientAccount(email)
+    # else:
+    #     st.write("есть аккаунт")
+    st.write(get_test())
 
 def _createClientAccount(email):
     with st.form(ui["form_title"]["registration"]):
