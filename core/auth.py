@@ -75,25 +75,16 @@ def get_login():
 def get_token():
     state = st.query_params.get("state")
     code = st.query_params.get("code")
-    scope = st.query_params.get("scope")
-    print(type(scope))
-    print(scope)
-    scope_dict = scope.split(" ")
+    scope_str = st.query_params.get("scope")
+    scope_dict = scope_str.split(" ")
     for i in range(len(scope_dict)):
-        scope_dict[i] += "%20"
-
-    # Объединение всех строк в одну строку
-    result = "".join(scope_dict)
-
-    # Вывод результата
-    print(result)
-    print(scope_dict)
+        if i != len(scope_dict)-1:
+            scope_dict[i] += "%20"
+    scope = "".join(scope_dict)
     authuser = st.query_params.get("authuser")
     prompt = st.query_params.get("prompt")
-    st.write(state, authuser, prompt, code, scope)
 
-
-    authorization_response = f"http://localhost:8501/client-account?state={state}&code={code}&scope={result}&authuser={authuser}&prompt={prompt}"
+    authorization_response = f"http://localhost:8501/client-account?state={state}&code={code}&scope={scope}&authuser={authuser}&prompt={prompt}"
     st.write(authorization_response)
     # data = authorization_response
     # st.write(data)
@@ -102,7 +93,7 @@ def get_token():
     st.write(tokens)
     # return tokens
 
-    return "ff"
+    return "developing"
 async def get_authorization_url(client: GoogleOAuth2, redirect_uri: str):
     authorization_url = await client.get_authorization_url(redirect_uri, scope=["profile",
                                                                                 "email",
