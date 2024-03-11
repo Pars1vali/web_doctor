@@ -2,7 +2,6 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from httpx_oauth.clients.google import GoogleOAuth2
 import asyncio, datetime, streamlit as st
-from flask import jsonify
 
 from google_auth_oauthlib.flow import Flow
 flow = Flow.from_client_secrets_file(
