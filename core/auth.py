@@ -5,7 +5,7 @@ import asyncio, datetime, streamlit as st
 
 from google_auth_oauthlib.flow import Flow
 flow = Flow.from_client_secrets_file(
-        'core/client_secret.json',
+        'core/client_secret_public.json',
         scopes=[
             "profile",
             "email",
