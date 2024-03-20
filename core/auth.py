@@ -47,11 +47,10 @@ def _get_parameters():
     return state, code, scope, authuser, prompt
 
 
-# @st.cache_resource
+@st.cache_resource
 def _get_tokens(state, code, scope, authuser, prompt):
     authorization_response = f"https://web-doctor.streamlit.app/client-account?state={state}&code={code}&scope={scope}&authuser={authuser}&prompt={prompt}"
     tokens = flow.fetch_token(authorization_response=authorization_response)
-    #st.write(fff)
     return tokens
 
 def get_token():
