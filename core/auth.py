@@ -56,7 +56,9 @@ def _get_tokens(state, code, scope, authuser, prompt):
 
 def get_token():
     state, code, scope, authuser, prompt = _get_parameters()
+    st.write(state, code, scope, authuser, prompt)
     token = _get_tokens(state, code, scope, authuser, prompt)
+    st.write(token)
     return token["access_token"], token["refresh_token"]
 
 
