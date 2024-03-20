@@ -4,8 +4,8 @@ import streamlit as st
 
 from google_auth_oauthlib.flow import Flow
 
+# 'core/client_secret.json',
 flow = Flow.from_client_secrets_file(
-    # 'core/client_secret.json',
     'core/client_secret_public.json',
     scopes=["openid",
             'https://www.googleapis.com/auth/userinfo.email',
@@ -55,9 +55,10 @@ def _get_tokens(state, code, scope, authuser, prompt):
 
 
 def get_token():
-    state, code, scope, authuser, prompt = _get_parameters()
     try:
+        state, code, scope, authuser, prompt = _get_parameters()
         token = _get_tokens(state, code, scope, authuser, prompt)
+        st.write("token - ", token)
         return token["access_token"], token["refresh_token"]
     except Exception as e:
         print(e)
