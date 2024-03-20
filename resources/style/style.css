@@ -1,3 +1,10 @@
+.stHeader{
+    display: none;
+}
+.viewerBadge_link__qRIco{
+    display: none;
+}
+
 .stHeadingContainer span{
     text-align:center;
 }
