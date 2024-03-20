@@ -56,8 +56,12 @@ def _get_tokens(state, code, scope, authuser, prompt):
 
 def get_token():
     state, code, scope, authuser, prompt = _get_parameters()
-    token = _get_tokens(state, code, scope, authuser, prompt)
-    return token["access_token"], token["refresh_token"]
+    try:
+        token = _get_tokens(state, code, scope, authuser, prompt)
+        return token["access_token"], token["refresh_token"]
+    except Exception as e:
+        print(e)
+        st.info("Срок активной ссылки истек. Пройдите по ссылке регистрации Google еще раз")
 
 
 def get_email(access_token, refresh_token):
