@@ -1,6 +1,6 @@
 from core import loader
 import streamlit as st
-#TODO Переименовать класс в home.py
+
 ui, ui_images = None, None
 
 def load_resourses(file_style,file_localization, file_images ):
@@ -18,6 +18,7 @@ def init():
     with col1:
         if st.button(ui["button"]["client"], type="primary"):
             st.switch_page("pages/client.py")
+
     with col2:
         if st.button(ui["button"]["doctor"], type="primary"):
             st.switch_page("pages/doctor.py")

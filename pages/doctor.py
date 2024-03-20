@@ -38,9 +38,10 @@ def _login():
         password = st.text_input(label=ui["password"], type="password", key="login_password")
 
         if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary")):
-            if net.Doctor.login_account(login, password) == "true":
-                st.write("Вошел")
-                # st.switch_page('pages/account.py')
+            response = net.Doctor.login_account(login, password)
+            if response != "false":
+                st.session_state['data_doctor']=response
+                st.switch_page("pages/clients.py")
             else:
                 st.error(ui["error"]["login_or_password_incorrect"])
 
@@ -62,8 +63,7 @@ def _create():
                 response = net.Doctor.create_account(
                     user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password))
                 if response == "true":
-                    st.write("Вошел")
-                    # st.switch_page('pages/account.py')
+                    st.switch_page('pages/account.py')
                 elif response == "false":
                     st.error(ui["error"]["account_exists"])
             else:

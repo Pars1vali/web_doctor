@@ -42,3 +42,12 @@ class Doctor:
         headers['X-Custom-Info'] = 'new_doctor'
         response = requests.post(url, doctor.toJSON(), headers=headers)
         return response.text
+
+    @staticmethod
+    def get_client(id):
+        headers['X-Custom-Info'] = 'get_client'
+        data ={
+            "id": id
+        }
+        response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text

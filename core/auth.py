@@ -1,138 +1,76 @@
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
-from httpx_oauth.clients.google import GoogleOAuth2
-import asyncio, datetime, streamlit as st
+import streamlit as st
 
 from google_auth_oauthlib.flow import Flow
+
 flow = Flow.from_client_secrets_file(
-        'core/client_secret_public.json',
-        scopes=[
-            "profile",
-            "email",
+    # 'core/client_secret.json',
+    'core/client_secret_public.json',
+    scopes=["openid",
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            "https://www.googleapis.com/auth/fitness.location.read",
             "https://www.googleapis.com/auth/fitness.activity.read",
             "https://www.googleapis.com/auth/fitness.blood_glucose.read",
             "https://www.googleapis.com/auth/fitness.blood_pressure.read",
             "https://www.googleapis.com/auth/fitness.body.read",
             "https://www.googleapis.com/auth/fitness.body_temperature.read",
             "https://www.googleapis.com/auth/fitness.heart_rate.read",
-            "https://www.googleapis.com/auth/fitness.location.read",
             "https://www.googleapis.com/auth/fitness.nutrition.read",
             "https://www.googleapis.com/auth/fitness.oxygen_saturation.read",
             "https://www.googleapis.com/auth/fitness.reproductive_health.read",
             "https://www.googleapis.com/auth/fitness.sleep.read"
-            ,
-        ],
-    )
-# from dotenv import load_dotenv
-# https://frankie567.github.io/httpx-oauth/oauth2/
-#
-# load_dotenv('.env')
+            ],
+)
+# flow.redirect_uri = 'http://localhost:8501/client-account'
 
-# CLIENT_ID = os.environ['CLIENT_ID']
-# CLIENT_SECRET = os.environ['CLIENT_SECRET']
-# REDIRECT_URI = os.environ['REDIRECT_URI']
+flow.redirect_uri = 'https://web-doctor.streamlit.app/client-account'
 
-# CLIENT_ID = "169068403601-gt219934qaiqm1mp5b1aohf9dusk7fao.apps.googleusercontent.com"
-# CLIENT_SECRET = "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"
-# REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
-
-CLIENT_ID = "169068403601-uhgrr6frls1oc1idu9v49v0dedjsla8p.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
-REDIRECT_URI = "http://localhost:8501/client-account"#os.environ['REDIRECT_URI']
-access_token = None
-
-
-async def request_fit_data():
-    credentials = Credentials(access_token, refresh_token="ff", token_uri="f", client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-    fitness_store = build('fitness', 'v1', credentials=credentials)
-
-    # Определяем параметры запроса для получения данных о шагах
-    data_type_name = 'com.google.step_count.delta'
-    data_source_id = 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'
-    data = {
-        'aggregateBy': [{'dataTypeName': data_type_name, 'dataSourceId': data_source_id}],
-        'bucketByTime': {'durationMillis': 24 * 60 * 60 * 1000},
-        'startTimeMillis': int((datetime.datetime.now() - datetime.timedelta(days=20)).timestamp()) * 1000,
-        'endTimeMillis': int(datetime.datetime.now().timestamp()) * 1000
-    }
-
-
-
-    # Получаем агрегированные данные о шагах
-    result = fitness_store.users().dataset().aggregate(userId='me', body=data).execute()
-
-    return result
-    # Возвращаем результат в формате JSON
-    # return jsonify(result)
-
-def get_login():
-    flow.redirect_uri = 'https://web-doctor.streamlit.app/client-account'#'http://localhost:8501/client-account'
+def get_login():  # 'https://web-doctor.streamlit.app/client-account'#
     authorization_url, state = flow.authorization_url(
-        access_type='offline')#        include_granted_scopes='true')
+        access_type='offline')  # ,        include_granted_scopes='true')
     return authorization_url
 
-def get_token():
+
+def _get_parameters():
     state = st.query_params.get("state")
     code = st.query_params.get("code")
     scope_str = st.query_params.get("scope")
     scope_dict = scope_str.split(" ")
     for i in range(len(scope_dict)):
-        if i != len(scope_dict)-1:
+        if i != len(scope_dict) - 1:
             scope_dict[i] += "%20"
     scope = "".join(scope_dict)
     authuser = st.query_params.get("authuser")
     prompt = st.query_params.get("prompt")
+    return state, code, scope, authuser, prompt
 
+
+@st.cache_resource
+def _get_tokens(state, code, scope, authuser, prompt):
     authorization_response = f"https://web-doctor.streamlit.app/client-account?state={state}&code={code}&scope={scope}&authuser={authuser}&prompt={prompt}"
-    st.write(authorization_response)
-    # data = authorization_response
-    # st.write(data)
-    # authuser prompt code scope
     tokens = flow.fetch_token(authorization_response=authorization_response)
-    st.write(tokens)
-    # return tokens
-
-    return "developing"
-async def get_authorization_url(client: GoogleOAuth2, redirect_uri: str):
-    authorization_url = await client.get_authorization_url(redirect_uri, scope=["profile",
-                                                                                "email",
-                                                                                "https://www.googleapis.com/auth/fitness.activity.read",
-                                                                                "https://www.googleapis.com/auth/fitness.blood_glucose.read",
-                                                                                "https://www.googleapis.com/auth/fitness.blood_pressure.read",
-                                                                                "https://www.googleapis.com/auth/fitness.body.read",
-                                                                                "https://www.googleapis.com/auth/fitness.body_temperature.read",
-                                                                                "https://www.googleapis.com/auth/fitness.heart_rate.read",
-                                                                                "https://www.googleapis.com/auth/fitness.location.read",
-                                                                                "https://www.googleapis.com/auth/fitness.nutrition.read",
-                                                                                "https://www.googleapis.com/auth/fitness.oxygen_saturation.read",
-                                                                                "https://www.googleapis.com/auth/fitness.reproductive_health.read",
-                                                                                "https://www.googleapis.com/auth/fitness.sleep.read"])
-    return authorization_url
+    return tokens
 
 
-async def get_access_token(client: GoogleOAuth2, redirect_uri: str, code: str):
-    token = await client.get_access_token(code, redirect_uri)
-    return token
+def get_token():
+    state, code, scope, authuser, prompt = _get_parameters()
+    token = _get_tokens(state, code, scope, authuser, prompt)
+    return token["access_token"], token["refresh_token"]
 
-async def get_email(client: GoogleOAuth2, token: str):
-    user_id, user_email = await client.get_id_email(token)
-    return user_id, user_email
 
-def get_login_str():
-    client: GoogleOAuth2 = GoogleOAuth2(CLIENT_ID, CLIENT_SECRET)
-    authorization_url = asyncio.run(
-        get_authorization_url(client, REDIRECT_URI))
-    return authorization_url
-    #return f''' < a target = "_self" href = "{authorization_url}" > Google login < /a > '''
-
-def display_user():
-    global access_token
-    client: GoogleOAuth2 = GoogleOAuth2(CLIENT_ID, CLIENT_SECRET)
-    # get the code from the url
-    code = st.query_params.get_all('code')
-    token = asyncio.run(get_access_token(
-        client, REDIRECT_URI, code))
-    user_id, user_email = asyncio.run(
-        get_email(client, token['access_token']))
-    access_token = token
-    return user_id, user_email, token
+def get_email(access_token, refresh_token):
+    creds = Credentials(token=access_token,
+                        refresh_token=refresh_token,
+                        client_id="169068403601-uhgrr6frls1oc1idu9v49v0dedjsla8p.apps.googleusercontent.com",
+                        client_secret="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",
+                        token_uri="https://oauth2.googleapis.com/tokenhttps://oauth2.googleapis.com/token")
+    user_info_service = build('oauth2', 'v2', credentials=creds)
+    try:
+        user_info = user_info_service.userinfo().get().execute()
+    except Exception as e:
+        user_info = None
+        print(e)
+        st.warning("Произошла ошибка на сервере Google")
+    return user_info

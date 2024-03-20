@@ -1,13 +1,13 @@
 from core import loader, auth
-from streamlit.components.v1 import html
 import streamlit as st
 
 ui, ui_images = None, None
 
+
 def load_resourses():
     global ui, ui_images
 
-    #TODO УБРАТЬ! БУдет только в классе central
+    # TODO УБРАТЬ! БУдет только в классе central
     loader.set_resources(
         file_style="resources/style/style.css",
         file_localization="resources/ui/localization/localization_ru.json",
@@ -22,6 +22,7 @@ def init():
     st.image(ui_images['client_icon'], width=350)
     st.link_button(label=ui["link_button"]["login_google"], url=auth.get_login(), type="primary")
 
-if(__name__ == '__main__'):
+
+if __name__ == '__main__':
     load_resourses()
     init()

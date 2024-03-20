@@ -10,6 +10,7 @@
 }
 .stMarkdown p{
     font-size:1.2rem;
+    color: rgb(0 0 0);
 }
 .stButton{
     text-align: center;
@@ -33,6 +34,12 @@
 }
 .st-emotion-cache-vk3wp9{
     display: none;
+}
+.st-emotion-cache-eqffof a {
+    color: rgb(0 0 0);
+}
+.st-emotion-cache-eqffof{
+    text-align: justify;
 }
 
 @media (max-width: 640px){

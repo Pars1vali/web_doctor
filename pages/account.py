@@ -1,10 +1,51 @@
-import streamlit as st
-# from st_pages import Page, show_pages, hide_pages
+from core import loader
+from annotated_text import annotated_text
+import streamlit as st, json
 
+# from st_pages import Page, show_pages, hide_pages
+#
 # show_pages([
 #     Page("pages/account.py", "Личный кабинет"),
-#     Page("pages/clients.py", "Клиенты"),
-#     Page("doctor.py", "Выйти")
+#     Page("pages/clients.py", "Клиенты")
 # ])
 
-st.title("Личный кабинет")
+ui, ui_images = None, None
+
+def load_resourses():
+    global ui, ui_images
+
+    #TODO УБРАТЬ! БУдет только в классе central
+    loader.set_resources(
+        file_style="resources/style/style.css",
+        file_localization="resources/ui/localization/localization_ru.json",
+        file_images="resources/ui/image.json")
+
+    st.markdown(loader.load_styles(), unsafe_allow_html=True)
+    ui, ui_images = loader.load_localization(), loader.load_images()
+
+def foother():
+    st.divider()
+    clients, exit, remove_account = st.columns(3)
+    if exit.button(label="Выход", type="primary"):
+        st.switch_page("home.py")
+    if remove_account.button("Удалить аккаунт", type="primary"):
+        pass
+    if clients.button("Клиенты", type="primary"):
+        st.switch_page("pages/clients.py")
+
+def controller():
+    foother()
+
+def init():
+    # st.header("Личный кабинет специалиста")
+    data_doctor = json.loads(st.session_state.get("data_doctor"))
+    st.title(f"{data_doctor[1]} {data_doctor[2]} {data_doctor[3]}")
+    annotated_text((f"{data_doctor[5]}", "Организация", "#afa"))
+    annotated_text((f"{data_doctor[4]}", "Должность", "#afa"))
+    annotated_text((f"{data_doctor[8]}", "Почта", "#afa"))
+    annotated_text((f"{data_doctor[6]}", "Номер телефона", "#afa"))
+    controller()
+
+if __name__=='__main__':
+    load_resourses()
+    init()
