@@ -4,8 +4,8 @@ import streamlit as st
 
 from google_auth_oauthlib.flow import Flow
 
-# 'core/client_secret.json',
 flow = Flow.from_client_secrets_file(
+# 'core/client_secret.json',
     'core/client_secret_public.json',
     scopes=["openid",
             'https://www.googleapis.com/auth/userinfo.email',
@@ -27,7 +27,7 @@ flow = Flow.from_client_secrets_file(
 
 flow.redirect_uri = 'https://web-doctor.streamlit.app/client-account'
 
-def get_login():  # 'https://web-doctor.streamlit.app/client-account'#
+def get_login():
     authorization_url, state = flow.authorization_url(
         access_type='offline')  # ,        include_granted_scopes='true')
     return authorization_url
@@ -53,21 +53,16 @@ def _get_tokens(state, code, scope, authuser, prompt):
     tokens = flow.fetch_token(authorization_response=authorization_response)
     return tokens
 
-
 def get_token():
-    try:
-        state, code, scope, authuser, prompt = _get_parameters()
-        token = _get_tokens(state, code, scope, authuser, prompt)
-        st.write("token - ", token)
-        return token["access_token"], token["refresh_token"]
-    except Exception as e:
-        print(e)
-        st.info("Срок активной ссылки истек. Пройдите по ссылке регистрации Google еще раз")
+    state, code, scope, authuser, prompt = _get_parameters()
+    token = _get_tokens(state, code, scope, authuser, prompt)
+    # st.write("token - ", token)
+    return token #token["access_token"] #, token["refresh_token"]
 
 
-def get_email(access_token, refresh_token):
+def get_email(access_token):#, refresh_token):
     creds = Credentials(token=access_token,
-                        refresh_token=refresh_token,
+                        # refresh_token=refresh_token,
                         client_id="169068403601-uhgrr6frls1oc1idu9v49v0dedjsla8p.apps.googleusercontent.com",
                         client_secret="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",
                         token_uri="https://oauth2.googleapis.com/tokenhttps://oauth2.googleapis.com/token")

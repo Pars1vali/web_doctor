@@ -13,15 +13,18 @@ def load_resourses(file_style,file_localization, file_images ):
 
 def init():
     st.header(ui["topics"]["personal_account"])
-    access_token, refresh_token = auth.get_token()
-    data_email = auth.get_email(access_token, refresh_token)
+    # access_token, refresh_token = auth.get_token()
+    token = auth.get_token()
+    access_token = token["access_token"]
+    # data_email = auth.get_email(access_token, refresh_token)
+    data_email = auth.get_email(access_token)
     if data_email is not None:
         email = data_email['email']
 
         response = net.Client.login_account(email)
         if(response == 'false'):
             st.info(ui["info"]["first_registration"])
-            _createClientAccount(email, refresh_token)
+            _createClientAccount(email, token["refresh_token"])
         else:
             try:
                 data_client = json.loads(response)
