@@ -3,6 +3,7 @@ import json, requests, os
 
 # url = os.getenv('SERVER_PATH')
 url = "https://d5dam91qvmi3s9e5ngo8.apigw.yandexcloud.net/authentication"
+url_fit = "https://d5d3s1crlakbffikg0bu.apigw.yandexcloud.net/collect-fit-data"
 headers = {'Content-Type': 'application/json'}
 
 class Client:
@@ -50,4 +51,13 @@ class Doctor:
             "id": id
         }
         response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+
+    @staticmethod
+    def get_client_data(email):
+        headers['X-Custom-Info'] = 'DATA_COLLECT'
+        data = {
+            "email": email
+        }
+        response = requests.post(url_fit, json.dumps(data), headers=headers)
         return response.text

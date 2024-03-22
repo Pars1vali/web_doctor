@@ -1,10 +1,32 @@
-from core import loader, net
+from core import loader, net, fit_unit
 from annotated_text import annotated_text
+from streamlit_modal import Modal
+from streamlit import components
 import streamlit as st, json
 
 
 ui, ui_images = None, None
 clients = net.Doctor.get_client(json.loads(st.session_state.get("data_doctor"))[0])
+
+
+def show_points(points):
+    for num, point in enumerate(points):
+        point_name, point_value, point_metric = fit_unit.FitUnit.get_data_unit(point, points[point])
+        st.metric(f"{point_name}", f"{point_value}", point_metric)
+
+
+
+def show_data(email):
+    response = json.loads(net.Doctor.get_client_data(email))
+    number_bucket_list = [number_bucket for number_bucket in response]
+    tabs = st.tabs(number_bucket_list)
+    for number_bucket in response:
+        with tabs[int(number_bucket)]:
+            points = response[number_bucket]
+            if(len(points)>0):
+                show_points(points)
+            else:
+                st.subheader("Данных за это время не собрано")
 
 
 def load_resourses(file_style,file_localization, file_images ):
@@ -33,14 +55,14 @@ def show_clients():
         return
 
     clients_data = json.loads(clients)
-
     for client in clients_data:
         with st.expander(f"{client[2]} {client[1]} {client[3]}"):
             annotated_text((f"{client[5]}", "Почта", "#afa"))
             annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
-            annotated_text((f"{client[4]}", "Врач", "#afa"))
+            # annotated_text((f"{client[4]}", "Врач", "#afa"))
             if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}"):
-                pass
+                # data_input = st.popover("vfvf")
+                show_data(client[5])
 
 def header():
     account, exit = st.columns(2)
