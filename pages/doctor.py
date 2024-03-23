@@ -19,9 +19,9 @@ def init():
     st.image(image=ui_images["doctors_icon"], width=300)
 
     create, login = st.columns(2)
-    if create.button(label=ui['button']['create_link_btn'], type="primary"):
+    if create.button(label=ui['button']['create_link_btn'], type="primary", use_container_width=True):
         st.session_state['mode']='create'
-    if login.button(label=ui['button']["login_link_btn"], type="primary"):
+    if login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True):
         st.session_state['mode']='login'
 
     controller()

@@ -43,7 +43,7 @@ def controller():
 def foother():
     st.divider()
     exit, remove_account = st.columns(2)
-    if exit.button(label="Выход", type="primary"):
+    if exit.button(label="Выход", type="primary", use_container_width=True):
         st.switch_page("home.py")
     if remove_account.button("Удалить аккаунт", type="primary"):
         pass

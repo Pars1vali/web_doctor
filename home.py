@@ -17,11 +17,11 @@ def init():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button(ui["button"]["client"], type="primary"):
+        if st.button(ui["button"]["client"], type="primary", use_container_width=True):
             st.switch_page("pages/client.py")
 
     with col2:
-        if st.button(ui["button"]["doctor"], type="primary"):
+        if st.button(ui["button"]["doctor"], type="primary", use_container_width=True):
             st.switch_page("pages/doctor.py")
 
 if __name__ == '__main__':
