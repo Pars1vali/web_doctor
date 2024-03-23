@@ -49,7 +49,10 @@
     text-align: justify;
 }
 
-@media (max-width: 640px){
+.st-emotion-cache-l1kb65{
+    width: 280px;
+}
+@media screen and (max-width: 600px) {
 .st-emotion-cache-12w0qpk {
     min-width: calc(10% - 1.5rem);
 }
@@ -63,3 +66,4 @@
     font-weight: 600;
 }
 }
+{}
