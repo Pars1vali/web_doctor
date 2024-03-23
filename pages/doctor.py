@@ -37,7 +37,7 @@ def _login():
         login = st.text_input(label=ui["login"])
         password = st.text_input(label=ui["password"], type="password", key="login_password")
 
-        if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary")):
+        if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary", use_container_width=True)):
             response = net.Doctor.login_account(login, password)
             if response != "false":
                 st.session_state['data_doctor']=response
@@ -58,7 +58,7 @@ def _create():
         password = _createPassword()
         all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password])
 
-        if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary"):
+        if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
             if all_fields:
                 response = net.Doctor.create_account(
                     user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password))
@@ -80,6 +80,6 @@ def _createPassword():
 
 
 if __name__=='__main__':
-    st.session_state['mode'] = 'login'
+    # st.session_state['mode'] = 'login'
     load_resourses()
     init()

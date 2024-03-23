@@ -17,7 +17,7 @@ def init():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button(ui["button"]["client"], type="primary", use_container_width=True):
+        if st.button(ui["button"]["client"], use_container_width=True):
             st.switch_page("pages/client.py")
 
     with col2:
