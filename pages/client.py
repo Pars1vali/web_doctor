@@ -20,7 +20,7 @@ def load_resourses():
 def init():
     st.title(ui["topics"]["welcome_client"])
     st.image(ui_images['client_icon'], width=350)
-    st.link_button(label=ui["link_button"]["login_google"], url=auth.get_login(), type="primary")
+    st.link_button(label=ui["link_button"]["login_google"], url=auth.get_login(), type="primary", use_container_width=True)
 
 
 if __name__ == '__main__':
