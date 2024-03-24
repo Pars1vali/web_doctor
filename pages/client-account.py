@@ -42,11 +42,11 @@ def controller():
 
 def foother():
     st.divider()
-    exit, remove_account = st.columns(2)
+    exit, settings = st.columns(2)
+    if settings.button("Настройки", use_container_width=True):
+        st.switch_page("pages/settings.py")
     if exit.button(label="Выход", type="primary", use_container_width=True):
         st.switch_page("home.py")
-    if remove_account.button("Удалить аккаунт", type="primary"):
-        pass
 
 def _createClientAccount(email,refresh_token):
     with st.form(ui["form_title"]["registration"]):
@@ -57,7 +57,7 @@ def _createClientAccount(email,refresh_token):
         doctor_id = st.text_input(label=ui["user"]["doctor_id"])
 
         all_fields = all([firstname, lastname, surname, phone_number, doctor_id])
-        if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary"):
+        if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
             if all_fields:
                 response = net.Client.create_account(
                     user.Client(firstname, lastname, surname, phone_number, int(doctor_id), email, str(refresh_token)))
