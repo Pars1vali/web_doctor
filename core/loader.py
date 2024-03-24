@@ -1,6 +1,7 @@
 import json, streamlit as st
 
 path_style, path_images, path_ui_localization = None, None, None
+language = "ru"
 
 @st.cache_resource
 def set_resources(file_style, file_localization, file_images):
@@ -23,6 +24,20 @@ def load_styles():
     with open(path_style, encoding='utf-8') as f:
         return '<style>{}</style>'.format(f.read())
 
+
+@staticmethod
+def set_language(language_set):
+    global language
+    language_code = language
+    match(language_set):
+        case "Русский":
+            language_code = "ru"
+        case "English":
+            language_code = "en"
+        case "中國人":
+            language_code = "ch"
+
+    language = language_code
 
 # @staticmethod
 # def get_localization():

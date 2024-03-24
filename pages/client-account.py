@@ -69,7 +69,7 @@ def _createClientAccount(email,refresh_token):
                 st.error(ui["error"]["fields_incomplete"])
 
 if __name__ == '__main__':
-    user_language = "ru"
+    user_language = loader.language
     load_resourses(
         file_style="resources/style/style.css",
         file_localization=f"resources/ui/localization/localization_{user_language}.json",
