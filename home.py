@@ -10,8 +10,10 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
+
+
+
 def init():
-    # f
     st.title(ui["topics"]["welcome"])
     st.image(ui_images['main_icon'], width=350)
 

@@ -1,4 +1,5 @@
 from core import net, user, loader
+from annotated_text import annotated_text
 import streamlit as st
 
 ui, ui_images = None, None
@@ -16,15 +17,15 @@ def load_resourses():
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 def init():
-    st.image(image=ui_images["doctors_icon"], width=300)
+    st.image(image=ui_images["doctors_icon"], width=270)
 
-    create, login = st.columns(2)
-    if create.button(label=ui['button']['create_link_btn'], type="primary", use_container_width=True):
-        st.session_state['mode']='create'
-    if login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True):
-        st.session_state['mode']='login'
-
+    # create, login = st.columns(2)
     controller()
+    # if st.button(label=ui['button']['create_link_btn'], use_container_width=True, w):
+    #     st.session_state['mode'] = 'create'
+    # btn = login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True)
+    # if login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True):
+    #     st.session_state['mode'] = 'login'
 
 def controller():
     if(st.session_state['mode']=='login'):
@@ -45,6 +46,9 @@ def _login():
             else:
                 st.error(ui["error"]["login_or_password_incorrect"])
 
+        if st.form_submit_button(label="Регистрация", use_container_width=True):
+            pass
+
 def _create():
     with st.form(ui["form_title"]["registration"]):
         firstname = st.text_input(label=ui["user"]["firstname"])
@@ -57,7 +61,6 @@ def _create():
         email = st.text_input(label=ui["user"]["email"])
         password = _createPassword()
         all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password])
-
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
             if all_fields:
                 response = net.Doctor.create_account(
@@ -68,6 +71,9 @@ def _create():
                     st.error(ui["error"]["account_exists"])
             else:
                 st.error(ui["error"]["fields_incomplete"])
+
+
+
 
 def _createPassword():
     password = st.text_input(label=ui["user"]["password"], type="password")
@@ -80,6 +86,6 @@ def _createPassword():
 
 
 if __name__=='__main__':
-    # st.session_state['mode'] = 'login'
+    st.session_state['mode'] = 'login'
     load_resourses()
     init()
