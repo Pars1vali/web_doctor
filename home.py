@@ -15,7 +15,7 @@ def load_resourses(file_style,file_localization, file_images ):
 
 def init():
     st.title(ui["topics"]["welcome"])
-    st.image(ui_images['main_icon'], width=350)
+    st.image(ui_images['main_icon'], width=320)
 
     col1, col2 = st.columns(2)
     with col1:
