@@ -54,7 +54,10 @@ def _get_tokens(state, code, scope, authuser, prompt):
     return tokens
 
 def get_token():
-    state, code, scope, authuser, prompt = _get_parameters()
+    try:
+        state, code, scope, authuser, prompt = _get_parameters()
+    except:
+        pass
     token = _get_tokens(state, code, scope, authuser, prompt)
     # st.write("token - ", token)
     return token #token["access_token"] #, token["refresh_token"]
