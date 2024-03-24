@@ -42,7 +42,7 @@ def controller():
 
 def foother():
     st.divider()
-    exit, settings = st.columns(2)
+    settings, exit = st.columns(2)
     if settings.button("Настройки", use_container_width=True):
         st.switch_page("pages/settings.py")
     if exit.button(label="Выход", type="primary", use_container_width=True):
