@@ -3,6 +3,8 @@ from annotated_text import annotated_text
 import streamlit as st
 
 ui, ui_images = None, None
+text_btn = 'Регистрация'
+mode = 'create'
 
 def load_resourses():
     global ui, ui_images
@@ -17,12 +19,15 @@ def load_resourses():
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 def init():
-    st.image(image=ui_images["doctors_icon"], width=270)
+    global text_btn, mode
+    st.image(image=ui_images["doctors_icon"], width=280)
 
     # create, login = st.columns(2)
+    # if st.button(label=text_btn, use_container_width=True):
+    #     st.session_state['mode'] = mode
+    #     text_btn = 'Войти'
+    #     mode = 'login'
     controller()
-    # if st.button(label=ui['button']['create_link_btn'], use_container_width=True, w):
-    #     st.session_state['mode'] = 'create'
     # btn = login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True)
     # if login.button(label=ui['button']["login_link_btn"], type="primary", use_container_width=True):
     #     st.session_state['mode'] = 'login'
@@ -46,8 +51,8 @@ def _login():
             else:
                 st.error(ui["error"]["login_or_password_incorrect"])
 
-        if st.form_submit_button(label="Регистрация", use_container_width=True):
-            pass
+        # if st.form_submit_button(label="Регистрация", use_container_width=True):
+        #     st.session_state['mode'] = 'create'
 
 def _create():
     with st.form(ui["form_title"]["registration"]):
