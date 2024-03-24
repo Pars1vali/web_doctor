@@ -3,7 +3,7 @@
   "login": "Логин",
   "password": "Пароль",
   "button": {
-    "create_link_btn": "Создать",
+    "create_link_btn": "Регистрация",
     "login_link_btn": "Есть аккаунт",
     "crete_account_btn": "Зарегестрироваться",
     "login_account_btn": "Войти",

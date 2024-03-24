@@ -1,3 +1,6 @@
+*{
+    background-image: url("/experiment/phone.jpg");
+}
 .stHeader{
     display: none;
 }
