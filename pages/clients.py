@@ -40,7 +40,10 @@ def search_client(search_query):
                 annotated_text((f"{client[5]}", "Почта", "#afa"))
                 annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
                 if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}_search"):
-                    show_data(client[5])
+                    # show_data(client[5])
+                    st.session_state['email'] = client[5]
+                    st.switch_page("pages/analitic.py")
+                    
 
     if is_found is False:
         st.info("Не найдено")
