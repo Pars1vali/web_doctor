@@ -67,12 +67,10 @@ def show_clients():
             annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
             # dt = st_ui.date_picker(key=f"{client[0]}", mode="single", label="Date Picker")
             if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}", use_container_width=True):
+                # show_data(client[5])
                 st.session_state['email'] = client[5]
-                test()
-                # show_data(client[5])njkо
+                st.switch_page("pages/analitic.py")
 
-def test():
-    st.switch_page("pages/analitic.py")
 
 def show_points(points):
     for num, point in enumerate(points):
