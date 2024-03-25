@@ -1,6 +1,7 @@
 from core import loader, net, fit_unit
 import  streamlit as st, json, datetime
 import streamlit_antd_components as sac
+import pandas as pd
 
 ui, ui_images = None, None
 
@@ -12,11 +13,6 @@ def load_resourses(file_style,file_localization, file_images ):
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 
-def foother():
-    if st.button("Назад", type="primary", use_container_width=True):
-        st.switch_page("pages/clients.py")
-
-
 def init():
     st.title("Даннные о здоровье")
     controller()
@@ -24,11 +20,9 @@ def init():
     foother()
 
 
-def chat_with_client():
-    pass
-
-
 def controller():
+    date = st.date_input("Выберите дату", max_value=datetime.datetime.now())
+    email = st.session_state['email']
     mode = sac.segmented(
         items=['Показатели', 'Аналитика', 'Обращения','Чат'],
         index=0,
@@ -36,20 +30,33 @@ def controller():
         align='center',
         direction='horizontal',
         radius='lg',
-        use_container_width=True
-    )
+        use_container_width=True)
+
     match(mode):
         case 'Показатели':
-            current_date = datetime.datetime.now()
-            email = st.session_state['email']
-            date = st.date_input("Выберите дату", max_value=current_date)
             show_data(email, date)
         case 'Аналитика':
-            pass
+            analitics(email, date)
         case 'Обращения':
             pass
         case 'Чат':
             chat_with_client()
+
+def chat_with_client():
+    pass
+
+
+# @st.cache_resource(experimental_allow_widgets=True)
+def analitics(email, date):
+    response = net.Doctor.get_client_data(email)
+    df = pd.read_json(response).fillna(0).transpose()
+    df.columns = fit_unit.FitUnit.change_name_columns(df.columns.tolist())
+    st.write(df.transpose())
+    st.divider()
+    metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать")
+    st.line_chart(df[metrics], use_container_width=True)
+
+
 
 
 @st.cache_resource
@@ -65,10 +72,15 @@ def show_data(email, date):
             else:
                 st.subheader("Данных за это время не собрано")
 
+
 def show_points(points):
     for num, point in enumerate(points):
         point_name, point_value, point_metric = fit_unit.FitUnit.get_data_unit(point, points[point])
         st.metric(f"{point_name}", f"{point_value}", point_metric)
+
+def foother():
+    if st.button("Назад", type="primary", use_container_width=True):
+        st.switch_page("pages/clients.py")
 
 
 

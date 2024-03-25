@@ -1,3 +1,6 @@
+import streamlit
+
+
 class FitUnit:
     @staticmethod
     def get_data_unit(point_name, point_value):
@@ -27,3 +30,29 @@ class FitUnit:
                 point_metric = "Шагов"
 
         return point_name_ru, point_value, point_metric
+
+
+    @staticmethod
+    def change_name_columns(columns):
+        columns_new = list()
+
+        for column in columns:
+            columns_name = None
+            match column:
+                case "calories":
+                    columns_name = "Калории"
+                case "distance":
+                    columns_name = "Дистанция"
+                case "active_minutes":
+                    columns_name = "Время активности"
+                case "activity":
+                    columns_name = "Баллы аквтиности"
+                case "speed":
+                    columns_name = "Скорость"
+                case "heart_minutes":
+                    columns_name = "Пульс"
+                case "step_count":
+                    columns_name = "Счетчик шагов"
+            columns_new.append(columns_name)
+
+        return columns_new

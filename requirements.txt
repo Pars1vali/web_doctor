@@ -6,3 +6,4 @@ st-annotated-text==4.0.1
 streamlit-modal==0.1.2
 streamlit-antd-components==0.3.2
 streamlit-shadcn-ui==0.1.18
+pandas==2.2.1
