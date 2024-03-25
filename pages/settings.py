@@ -15,7 +15,7 @@ def init():
     st.title("Настройки")
     language = st.selectbox('Язык',('Русский', 'English', '中國人'))
     loader.set_language(language)
-    language = st.selectbox('Тема', ("Light", "Dark"))
+    theme = st.selectbox('Тема', ("Light", "Dark"))
     st.divider()
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):
         pass
