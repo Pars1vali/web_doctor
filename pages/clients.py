@@ -1,7 +1,6 @@
 from core import loader, net, fit_unit
 from annotated_text import annotated_text
-from streamlit_modal import Modal
-from streamlit import components
+import streamlit_shadcn_ui as st_ui
 import streamlit as st, json
 
 
@@ -63,9 +62,8 @@ def show_clients():
         with st.expander(f"{client[2]} {client[1]} {client[3]}"):
             annotated_text((f"{client[5]}", "Почта", "#afa"))
             annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
-            # annotated_text((f"{client[4]}", "Врач", "#afa"))
-            if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}"):
-                # data_input = st.popover("vfvf")
+            # dt = st_ui.date_picker(key=f"{client[0]}", mode="single", label="Date Picker")
+            if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}", use_container_width=True):
                 show_data(client[5])
 
 def show_points(points):

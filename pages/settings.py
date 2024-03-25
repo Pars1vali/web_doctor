@@ -1,5 +1,6 @@
 from core import loader
 import streamlit as st
+import streamlit_shadcn_ui as ui
 
 ui, ui_images = None, None
 
@@ -18,6 +19,7 @@ def init():
     st.divider()
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):
         pass
+
 
 if __name__ == '__main__':
     user_language = loader.language
