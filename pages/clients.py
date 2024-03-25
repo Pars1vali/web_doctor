@@ -63,6 +63,8 @@ def show_clients():
     clients_data = json.loads(clients)
     for client in clients_data:
         with st.expander(f"{client[2]} {client[1]} {client[3]}"):
+            image_container = st.container(border=True)
+            image_container.image("experiment/doctor.png", width=200)
             annotated_text((f"{client[5]}", "Почта", "#afa"))
             annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
             # dt = st_ui.date_picker(key=f"{client[0]}", mode="single", label="Date Picker")

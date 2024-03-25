@@ -11,9 +11,17 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
+
+def foother():
+    if st.button("Назад", type="primary", use_container_width=True):
+        st.switch_page("pages/clients.py")
+
+
 def init():
     st.title("Даннные о здоровье")
     controller()
+    st.divider()
+    foother()
 
 
 def chat_with_client():
