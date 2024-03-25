@@ -66,7 +66,7 @@ def show_clients():
             if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}", use_container_width=True):
                 st.session_state['email'] = client[5]
                 st.switch_page("pages/analitic.py")
-                # show_data(client[5])njk
+                # show_data(client[5])njkо
 
 def show_points(points):
     for num, point in enumerate(points):
