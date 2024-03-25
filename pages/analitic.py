@@ -24,7 +24,7 @@ def controller():
     date = st.date_input("Выберите дату", max_value=datetime.datetime.now())
     email = st.session_state['email']
     mode = sac.segmented(
-        items=['Показатели', 'Аналитика', 'Обращения','Чат'],
+        items=['Показатели', 'Аналитика', 'Обращения','Чат', 'Помощник'],
         index=0,
         format_func='title',
         align='center',
@@ -41,6 +41,8 @@ def controller():
             pass
         case 'Чат':
             chat_with_client()
+        case 'Помощник':
+            pass
 
 def chat_with_client():
     pass
