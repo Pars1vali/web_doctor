@@ -17,20 +17,17 @@ def init():
 
 
 def chat_with_client():
-    message = st.chat_message("assistant")
-    message.write("Hello human")
-    st.chat_input()
+    pass
 
 
 def controller():
     mode = sac.segmented(
-        items=['Показатели', 'Аналитика', 'Обращения','Переписка', 'Анализы'],
+        items=['Показатели', 'Аналитика', 'Обращения','Чат'],
         index=0,
         format_func='title',
         align='center',
         direction='horizontal',
         radius='lg',
-        return_index=False,
         use_container_width=True
     )
     match(mode):
@@ -43,10 +40,8 @@ def controller():
             pass
         case 'Обращения':
             pass
-        case 'Переписка':
+        case 'Чат':
             chat_with_client()
-        case  'Анализы':
-            pass
 
 
 @st.cache_resource
