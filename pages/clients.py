@@ -65,8 +65,11 @@ def show_clients():
             # dt = st_ui.date_picker(key=f"{client[0]}", mode="single", label="Date Picker")
             if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}", use_container_width=True):
                 st.session_state['email'] = client[5]
-                st.switch_page("pages/analitic.py")
+                test()
                 # show_data(client[5])njkо
+
+def test():
+    st.switch_page("pages/analitic.py")
 
 def show_points(points):
     for num, point in enumerate(points):
