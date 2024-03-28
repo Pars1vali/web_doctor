@@ -9,3 +9,4 @@ streamlit-shadcn-ui==0.1.18
 pandas==2.2.1
 transformers==4.39.1
 tensorflow==2.16.1
+tf-keras==2.16.0
