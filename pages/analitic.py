@@ -46,7 +46,9 @@ def controller():
             ai_helper()
 
 def ai_helper():
-    pass
+    pipe = pipeline("text-generation", model="Mohammed-Altaf/Medical-ChatBot")
+    res = pipe("How are yoy?")
+    st.write(res)
 
 
 def chat_with_client():
