@@ -38,7 +38,8 @@ def show_photo(image):
     image_str = image[2:-1]
     image_data = base64.b64decode(image_str)
     image = Image.open(io.BytesIO(image_data))
-    image_container.image(image, use_column_width="Auto")
+    image_container.image(image, use_column_width="auto")
+
 def foother():
     clients, settings = st.columns(2)
     if clients.button("Клиенты", use_container_width=True):
