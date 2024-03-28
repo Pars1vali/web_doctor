@@ -2,12 +2,15 @@ import json
 
 
 class Doctor:
-    def __init__(self, firstname, lastname, surname, post, organization, phone_number, username, email, password):
+    def __init__(self, photo, firstname, lastname, surname, age, post, organization, experience, phone_number, username, email, password):
+        self.photo = photo
         self.firstname = firstname
         self.lastname = lastname
         self.surname = surname
+        self.age = age
         self.post = post
         self.organization = organization
+        self.experience = experience
         self.phone_number = phone_number
         self.username = username
         self.email = email

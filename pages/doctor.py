@@ -1,11 +1,9 @@
 from core import net, user, loader
-from annotated_text import annotated_text
+from datetime import datetime
 import streamlit_antd_components as sac
-import streamlit as st
+import streamlit as st, base64
 
 ui, ui_images = None, None
-text_btn = 'Регистрация'
-mode = 'create'
 
 def load_resourses():
     global ui, ui_images
@@ -20,7 +18,6 @@ def load_resourses():
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 def init():
-    global text_btn, mode
     st.image(image=ui_images["doctors_icon"], width=280)
     btn = sac.segmented(
         items=['Войти', 'Регистрация'],
@@ -58,14 +55,15 @@ def _login():
             else:
                 st.error(ui["error"]["login_or_password_incorrect"])
 
-        # if st.form_submit_button(label="Регистрация", use_container_width=True):
-        #     st.session_state['mode'] = 'create'
 
 def _create():
+    global text_btn, mode
     with st.form(ui["form_title"]["registration"]):
+        photo = take_photo_profile()
         firstname = st.text_input(label=ui["user"]["firstname"], placeholder="Иван")
         lastname = st.text_input(label=ui["user"]["lastname"], placeholder="Иванов")
         surname = st.text_input(label=ui["user"]["surname"], placeholder="Иванович")
+        birthday = st.date_input("Дата рождения")
         post = st.text_input(label=ui["user"]["post"], placeholder="Терапевт")
         organization = st.text_input(label=ui["user"]["organization"], placeholder="ГБОУ №26")
         experience = st.number_input(label="Стаж", step=1, min_value=0)
@@ -73,12 +71,16 @@ def _create():
         username = st.text_input(label=ui["user"]["username"], placeholder="chumakwladimir")
         email = st.text_input(label=ui["user"]["email"], placeholder="chumakwladimir@gmail.com")
         password = _createPassword()
-        all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password])
+        all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password, photo, experience, birthday])
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
+            date_now = datetime.now()
+            age = int(date_now.year - birthday.year)
             if all_fields:
                 response = net.Doctor.create_account(
-                    user.Doctor(firstname, lastname, surname, post, organization, phone_number, username, email, password))
+                    user.Doctor(photo, firstname, lastname, surname, age, post, organization, int(experience), phone_number, username, email, password))
                 if response == "true":
+                    response = net.Doctor.login_account(username, password)
+                    st.session_state['data_doctor'] = response
                     st.switch_page('pages/account.py')
                 elif response == "false":
                     st.error(ui["error"]["account_exists"])
@@ -86,7 +88,12 @@ def _create():
                 st.error(ui["error"]["fields_incomplete"])
 
 
-
+def take_photo_profile():
+    image = st.camera_input("Фото профиля")
+    if image is not None:
+        image_bytes = image.read()
+        image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+        return image_base64
 
 def _createPassword():
     password = st.text_input(label=ui["user"]["password"], type="password")
