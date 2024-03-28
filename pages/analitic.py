@@ -3,6 +3,8 @@ import  streamlit as st, json, datetime
 import streamlit_antd_components as sac
 import pandas as pd
 
+from transformers import pipeline
+
 ui, ui_images = None, None
 
 def load_resourses(file_style,file_localization, file_images ):
@@ -22,7 +24,6 @@ def init():
 
 def controller():
     date = st.date_input("Выберите дату", max_value=datetime.datetime.now())
-    email = st.session_state['email']
     mode = sac.segmented(
         items=['Показатели', 'Аналитика', 'Обращения','Чат', 'Помощник'],
         index=0,
@@ -34,22 +35,27 @@ def controller():
 
     match(mode):
         case 'Показатели':
-            show_data(email, date)
+            show_data(date)
         case 'Аналитика':
-            analitics(email, date)
+            analitics(date)
         case 'Обращения':
             pass
         case 'Чат':
             chat_with_client()
         case 'Помощник':
-            pass
+            ai_helper()
+
+def ai_helper():
+    pass
+
 
 def chat_with_client():
     pass
 
 
 # @st.cache_resource(experimental_allow_widgets=True)
-def analitics(email, date):
+def analitics(date):
+    email = st.session_state['email']
     response = net.Doctor.get_client_data(email)
     df = pd.read_json(response).fillna(0).transpose()
     df.columns = fit_unit.FitUnit.change_name_columns(df.columns.tolist())
@@ -58,11 +64,9 @@ def analitics(email, date):
     metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать")
     st.line_chart(df[metrics], use_container_width=True)
 
-
-
-
-@st.cache_resource
-def show_data(email, date):
+# @st.cache_resource
+def show_data(date):
+    email = st.session_state['email']
     response = json.loads(net.Doctor.get_client_data(email))
     number_bucket_list = [number_bucket for number_bucket in response]
     tabs = st.tabs(number_bucket_list)
@@ -73,7 +77,6 @@ def show_data(email, date):
                 show_points(points)
             else:
                 st.subheader("Данных за это время не собрано")
-
 
 def show_points(points):
     for num, point in enumerate(points):
