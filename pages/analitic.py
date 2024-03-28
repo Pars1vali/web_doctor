@@ -3,7 +3,6 @@ import  streamlit as st, json, datetime
 import streamlit_antd_components as sac
 import pandas as pd
 
-from transformers import pipeline
 
 ui, ui_images = None, None
 
@@ -46,9 +45,7 @@ def controller():
             ai_helper()
 
 def ai_helper():
-    pipe = pipeline("text-generation", model="Mohammed-Altaf/Medical-ChatBot")
-    res = pipe("How are yoy?")
-    st.write(res)
+    pass
 
 
 def chat_with_client():
