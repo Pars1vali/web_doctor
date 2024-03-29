@@ -1,5 +1,4 @@
 from core import net, user, loader
-from datetime import datetime
 import streamlit_antd_components as sac
 import streamlit as st, base64
 
@@ -63,18 +62,16 @@ def _create():
         firstname = st.text_input(label=ui["user"]["firstname"], placeholder="Иван")
         lastname = st.text_input(label=ui["user"]["lastname"], placeholder="Иванов")
         surname = st.text_input(label=ui["user"]["surname"], placeholder="Иванович")
-        birthday = st.date_input("Дата рождения")
+        age = st.number_input(label="Возраст", value=25, step=1, min_value=18)
         post = st.text_input(label=ui["user"]["post"], placeholder="Терапевт")
         organization = st.text_input(label=ui["user"]["organization"], placeholder="ГБОУ №26")
-        experience = st.number_input(label="Стаж", step=1, min_value=0)
+        experience = st.number_input(label="Стаж", step=1, min_value=0, value=5)
         phone_number = st.text_input(label=ui["user"]["phone_number"], placeholder="8(918)12-09-203")
         username = st.text_input(label=ui["user"]["username"], placeholder="chumakwladimir")
         email = st.text_input(label=ui["user"]["email"], placeholder="chumakwladimir@gmail.com")
         password = _createPassword()
-        all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password, photo, experience, birthday])
+        all_fields = all([firstname, lastname, surname, post, organization, phone_number, username, email, password, photo, experience, age])
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
-            date_now = datetime.now()
-            age = int(date_now.year - birthday.year)
             if all_fields:
                 response = net.Doctor.create_account(
                     user.Doctor(photo, firstname, lastname, surname, age, post, organization, int(experience), phone_number, username, email, password))

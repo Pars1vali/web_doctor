@@ -1,11 +1,10 @@
 from core import loader, net, fit_unit
 from annotated_text import annotated_text
-import streamlit_shadcn_ui as st_ui
 import streamlit as st, json
 
 
 ui, ui_images = None, None
-clients = net.Doctor.get_client(json.loads(st.session_state.get("data_doctor"))[0])
+clients = None
 
 
 def load_resourses(file_style,file_localization, file_images ):
@@ -15,8 +14,16 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
-
+def load_clients():
+    data_doctor_json = st.session_state.get("data_doctor")
+    data_doctor = json.loads(data_doctor_json)
+    doctor_id = data_doctor[0]
+    clients_data = net.Doctor.get_client(doctor_id)
+    return clients_data
+    # net.Doctor.get_client(json.loads(st.session_state.get("data_doctor"))[0])
 def init():
+    global clients
+    clients = load_clients()
     # data_doctor = json.loads(st.session_state.get("data_doctor"))
     # st.header(f"{data_doctor[1]} {data_doctor[2]} {data_doctor[3]}")
     controller()

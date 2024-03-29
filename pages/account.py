@@ -2,6 +2,7 @@ from core import loader
 from annotated_text import annotated_text
 from PIL import Image
 from io import BytesIO
+import streamlit_antd_components as sac
 import streamlit as st, json, base64, io
 
 ui, ui_images = None, None
@@ -34,18 +35,22 @@ def init():
     controller()
 
 def show_photo(image):
-    image_container = st.container(border=True)
-    image_str = image[2:-1]
-    image_data = base64.b64decode(image_str)
-    image = Image.open(io.BytesIO(image_data))
-    image_container.image(image, use_column_width="auto")
+    try:
+        image_container = st.container(border=True)
+        image_str = image[2:-1]
+        image_data = base64.b64decode(image_str)
+        image = Image.open(io.BytesIO(image_data))
+        image_container.image(image, use_column_width="auto")
+    except Exception as e:
+        print(e)
+        st.info("Фотографии профиля не загружена")
 
 def foother():
-    clients, settings = st.columns(2)
-    if clients.button("Клиенты", use_container_width=True):
+    clients, remove_account = st.columns(2)
+    if clients.button("Назад", use_container_width=True):
         st.switch_page("pages/clients.py")
-    if settings.button("Настройки", type="primary", use_container_width=True):
-        st.switch_page("pages/settings.py")
+    if remove_account.button("Удалить аккаунт", type="primary", use_container_width=True):
+        pass
 
 if __name__=='__main__':
     load_resourses()

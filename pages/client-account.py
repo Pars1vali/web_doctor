@@ -42,11 +42,11 @@ def controller():
 
 def foother():
     st.divider()
-    settings, exit = st.columns(2)
-    if settings.button("Настройки", use_container_width=True):
+    # settings, exit = st.columns(2)
+    if st.button("Настройки", use_container_width=True):
         st.switch_page("pages/settings.py")
-    if exit.button(label="Выход", type="primary", use_container_width=True):
-        st.switch_page("home.py")
+    # if exit.button(label="Выход", type="primary", use_container_width=True):
+    #     st.switch_page("home.py")
 
 def _createClientAccount(email,refresh_token):
     with st.form(ui["form_title"]["registration"]):

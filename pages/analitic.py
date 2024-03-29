@@ -1,7 +1,7 @@
 from core import loader, net, fit_unit
 import  streamlit as st, json, datetime
 import streamlit_antd_components as sac
-import pandas as pd
+import pandas as pd, time
 
 
 ui, ui_images = None, None
@@ -13,6 +13,14 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
+def get_email():
+    try:
+        email = st.session_state['email']
+        return email
+    except Exception as e:
+        st.info("Сеанс разорван. Перезайдите на платформу")
+        time.sleep(1)
+        st.switch_page("pages/doctor.py")
 
 def init():
     st.title("Даннные о здоровье")
@@ -24,7 +32,7 @@ def init():
 def controller():
     date = st.date_input("Выберите дату", max_value=datetime.datetime.now())
     mode = sac.segmented(
-        items=['Показатели', 'Аналитика', 'Обращения','Чат', 'Помощник'],
+        items=['Показатели', 'Аналитика', 'Обращения','Помощник'],
         index=0,
         format_func='title',
         align='center',
@@ -32,41 +40,36 @@ def controller():
         radius='lg',
         use_container_width=True)
 
+    email = get_email()
+
     match(mode):
         case 'Показатели':
-            show_data(date)
+            show_data(email, date)
         case 'Аналитика':
-            analitics(date)
+            analitics(email, date)
         case 'Обращения':
             pass
-        case 'Чат':
-            chat_with_client()
         case 'Помощник':
             ai_helper()
 
 def ai_helper():
     pass
 
-
-def chat_with_client():
-    pass
-
-
 # @st.cache_resource(experimental_allow_widgets=True)
-def analitics(date):
-    email = st.session_state['email']
-    response = net.Doctor.get_client_data(email)
+def analitics(email, date):
+    response = net.Doctor.get_client_data(email, date)
     df = pd.read_json(response).fillna(0).transpose()
     df.columns = fit_unit.FitUnit.change_name_columns(df.columns.tolist())
-    st.write(df.transpose())
-    st.divider()
-    metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать")
+    default_metrics = list(['Калории','Счетчик шагов'])
+    metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать", default=default_metrics)
     st.line_chart(df[metrics], use_container_width=True)
+    st.divider()
+    st.write(df.transpose())
 
 # @st.cache_resource
-def show_data(date):
-    email = st.session_state['email']
-    response = json.loads(net.Doctor.get_client_data(email))
+def show_data(email, date):
+    response_json = net.Doctor.get_client_data(email, date)
+    response = json.loads(response_json)
     number_bucket_list = [number_bucket for number_bucket in response]
     tabs = st.tabs(number_bucket_list)
     for number_bucket in response:
@@ -80,7 +83,7 @@ def show_data(date):
 def show_points(points):
     for num, point in enumerate(points):
         point_name, point_value, point_metric = fit_unit.FitUnit.get_data_unit(point, points[point])
-        st.metric(f"{point_name}", f"{point_value}", point_metric)
+        st.metric(label=f"{point_name}", value=f"{point_value}")#, delta=point_metric)
 
 def foother():
     if st.button("Назад", type="primary", use_container_width=True):
