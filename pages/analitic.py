@@ -69,17 +69,20 @@ def analitics(email, date):
 
 # @st.cache_resource
 def show_data(email, date):
-    response_json = net.Doctor.get_client_data(email, date)
-    response = json.loads(response_json)
-    number_bucket_list = [number_bucket for number_bucket in response]
-    tabs = st.tabs(number_bucket_list)
-    for number_bucket in response:
-        with tabs[int(number_bucket)]:
-            points = response[number_bucket]
-            if(len(points)>0):
-                show_points(points)
-            else:
-                st.subheader("Данных за это время не собрано")
+    try:
+        response_json = net.Doctor.get_client_data(email, date)
+        response = json.loads(response_json)
+        number_bucket_list = [number_bucket for number_bucket in response]
+        tabs = st.tabs(number_bucket_list)
+        for number_bucket in response:
+            with tabs[int(number_bucket)]:
+                points = response[number_bucket]
+                if(len(points)>0):
+                    show_points(points)
+                else:
+                    st.subheader("Данных за это время не собрано")
+    except Exception as e:
+        st.info("Данные за это время не собирались.")
 
 def show_points(points):
     for num, point in enumerate(points):
