@@ -42,6 +42,8 @@ def init():
 def show_bio(info):
     st.title(f"{info[1]} {info[2]} {info[3]}")
     show_photo(info[12])
+    annotated_text((f"{info[10]}", "Возраст", "#afa"))
+    annotated_text((f"{info[11]}", "Стаж", "#afa"))
     annotated_text((f"{info[5]}", "Организация", "#afa"))
     annotated_text((f"{info[4]}", "Должность", "#afa"))
     annotated_text((f"{info[8]}", "Почта", "#afa"))
