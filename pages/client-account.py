@@ -90,8 +90,16 @@ def init():
             show_client_info(response)
             controller()
 def controller():
+    make_appeal()
     foother()
 
+def make_appeal():
+    with st.popover("Обращение врачу", use_container_width=True):
+        photo_container, text_container = st.columns(2)
+        image = photo_container.camera_input("Сделайте фотографию")
+        topic = text_container.text_input("Тема обращения")
+        description =  text_container.text_area("Описание")
+        st.button("Послать врачу", use_container_width=True)
 def foother():
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):
