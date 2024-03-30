@@ -1,7 +1,9 @@
 from core import loader, auth, net, user
 from annotated_text import annotated_text
-import streamlit as st, json
-import streamlit_antd_components as sac
+from PIL import Image
+from io import BytesIO
+import streamlit as st, json, io
+import streamlit_antd_components as sac, base64
 
 ui, ui_images = None, None
 
@@ -39,6 +41,17 @@ def create_account(email, refresh_token):
         controller()
         show_client_info(net.Client.login_account(email))
 
+
+def show_photo(image):
+    try:
+        image_container = st.container(border=True)
+        image_str = image[2:-1]
+        image_data = base64.b64decode(image_str)
+        image = Image.open(io.BytesIO(image_data))
+        image_container.image(image, use_column_width="auto")
+    except Exception as e:
+        print(e)
+        st.info("Фотографии профиля не загружена")
 def show_client_info(client_info):
     try:
         data_client = json.loads(client_info)
@@ -50,8 +63,16 @@ def show_client_info(client_info):
         print(e)
         st.warning("Ошибка загрузки данных аккаунта")
 def show_doctor_info(doctor_id):
-    doctor_info = net.Doctor.get_doctor_info(doctor_id)
-    st.write(doctor_info)
+    doctor_info_json = net.Doctor.get_doctor_info(doctor_id)
+    doctor_info = json.loads(doctor_info_json)
+    with st.expander(f"Врач - {doctor_info[1]} {doctor_info[2]} {doctor_info[3]}"):
+        show_photo(doctor_info[12])
+        annotated_text((f"{doctor_info[11]}", "Возраст", "#afa"))
+        annotated_text((f"{doctor_info[5]}", "Организация", "#afa"))
+        annotated_text((f"{doctor_info[4]}", "Должность", "#afa"))
+        annotated_text((f"{doctor_info[10]}", "Стаж", "#afa"))
+        annotated_text((f"{doctor_info[8]}", "Почта", "#afa"))
+        annotated_text((f"{doctor_info[6]}", "Номер телефона", "#afa"))
 
 def init():
     st.header(ui["topics"]["personal_account"])
@@ -68,7 +89,6 @@ def init():
         else:
             show_client_info(response)
             controller()
-
 def controller():
     foother()
 

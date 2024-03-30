@@ -2,7 +2,6 @@ from core import loader
 from annotated_text import annotated_text
 from PIL import Image
 from io import BytesIO
-import streamlit_antd_components as sac
 import streamlit as st, json, base64, io
 
 ui, ui_images = None, None
