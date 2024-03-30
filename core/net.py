@@ -55,7 +55,6 @@ class Doctor:
         return response.text
 
     @staticmethod
-    @st.cache_resource
     def get_client_data(email, date):
         headers['X-Custom-Info'] = 'DATA_COLLECT'
         data = {

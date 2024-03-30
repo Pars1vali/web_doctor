@@ -15,7 +15,7 @@ def load_resourses(file_style,file_localization, file_images ):
 
 def get_email():
     try:
-        email = st.session_state['email']
+        email = st.session_state.get('email')
         return email
     except Exception as e:
         st.info("Сеанс разорван. Перезайдите на платформу")
@@ -50,7 +50,7 @@ def controller():
         case 'Обращения':
             pass
         case 'Помощник':
-            ai_helper()
+            pass#ai_helper()
 
 def ai_helper():
     pass
