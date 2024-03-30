@@ -26,6 +26,14 @@ def show_client_info(client_info):
         st.warning("Ошибка загрузки данных аккаунта")
 
 
+def create_account(email, refresh_token):
+    if _createClientAccount(email, refresh_token):
+        st.experimental_rerun()
+        show_client_info(net.Client.login_account(email))
+        controller()
+
+
+
 def init():
     st.header(ui["topics"]["personal_account"])
     # access_token, refresh_token = auth.get_token()
@@ -37,14 +45,10 @@ def init():
         email = data_email['email']
         response = net.Client.login_account(email)
         if(response == 'false'):
-            st.info(ui["info"]["first_registration"])
-            is_created_account = _createClientAccount(email, token["refresh_token"])
-            if is_created_account:
-                response = net.Client.login_account(email)
-                show_client_info(response)
+            create_account(email,token["refresh_token"])
         else:
             show_client_info(response)
-    controller()
+            controller()
 
 def show_doctor_info(doctor_id):
     doctor_info = net.Doctor.get_doctor_info(doctor_id)
@@ -59,6 +63,7 @@ def foother():
         pass
 
 def _createClientAccount(email,refresh_token):
+    st.info(ui["info"]["first_registration"])
     with st.form(ui["form_title"]["registration"]):
         firstname = st.text_input(label=ui["user"]["firstname"])
         lastname = st.text_input(label=ui["user"]["lastname"])
@@ -74,6 +79,7 @@ def _createClientAccount(email,refresh_token):
                 if response == "true":
                     return True
                 elif response == "false":
+                    st.info(response)
                     st.error(ui["error"]["account_exists"])
             else:
                 st.error(ui["error"]["fields_incomplete"])
