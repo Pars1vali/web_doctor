@@ -32,7 +32,6 @@ def init():
 
 def controller():
     date = str(st.date_input("Выберите дату", max_value=datetime.now()))
-    st.write(date)
     mode = sac.segmented(
         items=['Показатели', 'Аналитика', 'Обращения','Помощник'],
         index=0,
