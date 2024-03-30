@@ -50,7 +50,7 @@ def controller():
         case 'Обращения':
             pass
         case 'Помощник':
-            pass#ai_helper()
+            ai_helper()
 
 def ai_helper():
     pass
