@@ -101,23 +101,7 @@ def _createPassword():
     else:
         st.error(ui["error"]["passwords_mismatch"])
 
-def get_permissin():
-    html("""
-            <script>
-            window.onload = function() {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                        stream.getTracks().forEach(track => track.stop());
-                    })
-                    .catch(function(err) {
-                        console.error('Ошибка при получении доступа к камере: ' + err);
-                    });
-            }
-            </script>
-            """)
-
 if __name__=='__main__':
     st.session_state['mode'] = 'None'
-    get_permissin()
     load_resourses()
     init()
