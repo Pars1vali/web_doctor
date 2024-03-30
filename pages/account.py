@@ -18,22 +18,34 @@ def load_resourses():
 
     st.markdown(loader.load_styles(), unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
-
+def load_doctor_info():
+    try:
+        doctor_info_json = st.session_state.get("data_doctor")
+        doctor_info = json.loads(doctor_info_json)
+        return doctor_info
+    except Exception as e:
+        return None
 def controller():
     st.divider()
     foother()
 
 def init():
     # st.header("Личный кабинет специалиста")
-    data_doctor = json.loads(st.session_state.get("data_doctor"))
-    st.title(f"{data_doctor[1]} {data_doctor[2]} {data_doctor[3]}")
-    show_photo(data_doctor[12])
-    annotated_text((f"{data_doctor[5]}", "Организация", "#afa"))
-    annotated_text((f"{data_doctor[4]}", "Должность", "#afa"))
-    annotated_text((f"{data_doctor[8]}", "Почта", "#afa"))
-    annotated_text((f"{data_doctor[6]}", "Номер телефона", "#afa"))
+    doctor_info = load_doctor_info()
+    if doctor_info is not None:
+        show_bio(doctor_info)
+    else:
+        st.info("Сессия разорвана. Пожалуйста перезайдите.")
     controller()
 
+
+def show_bio(info):
+    st.title(f"{info[1]} {info[2]} {info[3]}")
+    show_photo(info[12])
+    annotated_text((f"{info[5]}", "Организация", "#afa"))
+    annotated_text((f"{info[4]}", "Должность", "#afa"))
+    annotated_text((f"{info[8]}", "Почта", "#afa"))
+    annotated_text((f"{info[6]}", "Номер телефона", "#afa"))
 def show_photo(image):
     try:
         image_container = st.container(border=True)

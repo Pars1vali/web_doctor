@@ -2,7 +2,6 @@ from core import loader, net, fit_unit
 from annotated_text import annotated_text
 import streamlit as st, json
 
-
 ui, ui_images = None, None
 clients = None
 
@@ -15,12 +14,16 @@ def load_resourses(file_style,file_localization, file_images ):
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 def load_clients():
-    data_doctor_json = st.session_state.get("data_doctor")
-    data_doctor = json.loads(data_doctor_json)
-    doctor_id = data_doctor[0]
-    clients_data = net.Doctor.get_client(doctor_id)
-    return clients_data
+    try:
+        data_doctor_json = st.session_state.get("data_doctor")
+        data_doctor = json.loads(data_doctor_json)
+        doctor_id = data_doctor[0]
+        clients_data = net.Doctor.get_client(doctor_id)
+        return clients_data
+    except Exception as e:
+        return None
     # net.Doctor.get_client(json.loads(st.session_state.get("data_doctor"))[0])
+
 def init():
     global clients
     clients = load_clients()
@@ -28,12 +31,13 @@ def init():
     # st.header(f"{data_doctor[1]} {data_doctor[2]} {data_doctor[3]}")
     controller()
 
-
 def controller():
-    show_clients()
+    if clients is not None:
+        show_clients()
+    else:
+        st.info("Сессеия разорвна. Пожалуйста перезайдите.")
     st.divider()
     foother()
-
 
 def search_client(search_query):
     st.markdown("Найдено:")
@@ -54,7 +58,6 @@ def search_client(search_query):
 
     if is_found is False:
         st.info("Не найдено")
-
 
 def show_clients():
     st.header("Клиенты")
@@ -79,26 +82,6 @@ def show_clients():
                 # show_data(client[5])
                 st.session_state['email'] = client[5]
                 st.switch_page("pages/analitic.py")
-
-
-def show_points(points):
-    for num, point in enumerate(points):
-        point_name, point_value, point_metric = fit_unit.FitUnit.get_data_unit(point, points[point])
-        st.metric(f"{point_name}", f"{point_value}", point_metric)
-
-def show_data(email):
-    response = json.loads(net.Doctor.get_client_data(email))
-    number_bucket_list = [number_bucket for number_bucket in response]
-    tabs = st.tabs(number_bucket_list)
-    for number_bucket in response:
-        with tabs[int(number_bucket)]:
-            points = response[number_bucket]
-            if(len(points)>0):
-                show_points(points)
-            else:
-                st.subheader("Данных за это время не собрано")
-
-
 
 def foother():
     account, exit = st.columns(2)
