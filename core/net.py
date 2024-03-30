@@ -64,3 +64,13 @@ class Doctor:
         }
         response = requests.post(url_fit, json.dumps(data), headers=headers)
         return response.text
+    @staticmethod
+    @st.cache_resource
+    def get_doctor_info(doctor_id):
+        headers['X-Custom-Info'] = 'DOCTOR_DATA_COLLECT'
+        data = {
+            "doctor_id": doctor_id
+        }
+        response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+

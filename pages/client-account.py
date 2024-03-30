@@ -21,7 +21,6 @@ def init():
     data_email = auth.get_email(access_token)
     if data_email is not None:
         email = data_email['email']
-
         response = net.Client.login_account(email)
         if(response == 'false'):
             st.info(ui["info"]["first_registration"])
@@ -32,11 +31,16 @@ def init():
                 st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
                 annotated_text((f"{data_client[5]}", "Почта", "#afa"))
                 annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
-                annotated_text((f"{data_client[4]}", "Врач", "#afa"))
+                show_doctor_info(data_client[4])
+                # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
             except Exception as e:
                 print(e)
                 st.warning("Ошибка загрузки данных аккаунта")
     controller()
+
+def show_doctor_info(doctor_id):
+    doctor_info = net.Doctor.get_doctor_info(doctor_id)
+    st.write(doctor_info)
 
 def controller():
     foother()
