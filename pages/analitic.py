@@ -58,31 +58,31 @@ def ai_helper():
 
 # @st.cache_resource(experimental_allow_widgets=True)
 def analitics(email, date):
-    response = net.Doctor.get_client_data(email, date)
-    df = pd.read_json(response).fillna(0).transpose()
-    df.columns = fit_unit.FitUnit.change_name_columns(df.columns.tolist())
-    default_metrics = list(['Калории','Счетчик шагов'])
-    metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать", default=default_metrics)
-    st.line_chart(df[metrics], use_container_width=True)
-    st.divider()
-    st.write(df.transpose())
+    try:
+        response = net.Doctor.get_client_data(email, date)
+        df = pd.read_json(response).fillna(0).transpose()
+        df.columns = fit_unit.FitUnit.change_name_columns(df.columns.tolist())
+        default_metrics = list(['Калории','Счетчик шагов'])
+        metrics = st.multiselect(label="Метрики", options=df.columns.tolist(), placeholder="Выбрать", default=default_metrics)
+        st.line_chart(df[metrics], use_container_width=True)
+        st.divider()
+        st.write(df.transpose())
+    except Exception as e:
+        st.info("Данных за это время не собрано.")
 
 # @st.cache_resource
 def show_data(email, date):
-    try:
-        response_json = net.Doctor.get_client_data(email, date)
-        response = json.loads(response_json)
-        number_bucket_list = [number_bucket for number_bucket in response]
-        tabs = st.tabs(number_bucket_list)
-        for number_bucket in response:
-            with tabs[int(number_bucket)]:
-                points = response[number_bucket]
-                if(len(points)>0):
-                    show_points(points)
-                else:
-                    st.subheader("Данных за это время не собрано")
-    except Exception as e:
-        st.info("Данные за это время не собирались.")
+    response_json = net.Doctor.get_client_data(email, date)
+    response = json.loads(response_json)
+    number_bucket_list = [number_bucket for number_bucket in response]
+    tabs = st.tabs(number_bucket_list)
+    for number_bucket in response:
+        with tabs[int(number_bucket)]:
+            points = response[number_bucket]
+            if(len(points)>0):
+                show_points(points)
+            else:
+                st.subheader("Данных за это время не собрано")
 
 def show_points(points):
     for num, point in enumerate(points):
