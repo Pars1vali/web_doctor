@@ -12,56 +12,6 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
-
-def show_client_info(client_info):
-    try:
-        data_client = json.loads(client_info)
-        st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
-        annotated_text((f"{data_client[5]}", "Почта", "#afa"))
-        annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
-        show_doctor_info(data_client[4])
-        # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
-    except Exception as e:
-        print(e)
-        st.warning("Ошибка загрузки данных аккаунта")
-
-
-def create_account(email, refresh_token):
-    if _createClientAccount(email, refresh_token):
-        st.experimental_rerun()
-        show_client_info(net.Client.login_account(email))
-        controller()
-
-
-
-def init():
-    st.header(ui["topics"]["personal_account"])
-    # access_token, refresh_token = auth.get_token()
-    token = auth.get_token()
-    access_token = token["access_token"]
-    # data_email = auth.get_email(access_token, refresh_token)
-    data_email = auth.get_email(access_token)
-    if data_email is not None:
-        email = data_email['email']
-        response = net.Client.login_account(email)
-        if(response == 'false'):
-            create_account(email,token["refresh_token"])
-        else:
-            show_client_info(response)
-            controller()
-
-def show_doctor_info(doctor_id):
-    doctor_info = net.Doctor.get_doctor_info(doctor_id)
-    st.write(doctor_info)
-
-def controller():
-    foother()
-
-def foother():
-    sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
-    if st.button("Удалить аккаунт", type="primary", use_container_width=True):
-        pass
-
 def _createClientAccount(email,refresh_token):
     st.info(ui["info"]["first_registration"])
     with st.form(ui["form_title"]["registration"]):
@@ -83,6 +33,50 @@ def _createClientAccount(email,refresh_token):
                     st.error(ui["error"]["account_exists"])
             else:
                 st.error(ui["error"]["fields_incomplete"])
+def create_account(email, refresh_token):
+    if _createClientAccount(email, refresh_token):
+        st.experimental_rerun()
+        controller()
+        show_client_info(net.Client.login_account(email))
+
+def show_client_info(client_info):
+    try:
+        data_client = json.loads(client_info)
+        st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
+        annotated_text((f"{data_client[5]}", "Почта", "#afa"))
+        annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
+        show_doctor_info(data_client[4])
+        # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
+    except Exception as e:
+        print(e)
+        st.warning("Ошибка загрузки данных аккаунта")
+def show_doctor_info(doctor_id):
+    doctor_info = net.Doctor.get_doctor_info(doctor_id)
+    st.write(doctor_info)
+
+def init():
+    st.header(ui["topics"]["personal_account"])
+    # access_token, refresh_token = auth.get_token()
+    token = auth.get_token()
+    access_token = token["access_token"]
+    # data_email = auth.get_email(access_token, refresh_token)
+    data_email = auth.get_email(access_token)
+    if data_email is not None:
+        email = data_email['email']
+        response = net.Client.login_account(email)
+        if(response == 'false'):
+            create_account(email, token["refresh_token"])
+        else:
+            show_client_info(response)
+            controller()
+
+def controller():
+    foother()
+
+def foother():
+    sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
+    if st.button("Удалить аккаунт", type="primary", use_container_width=True):
+        pass
 
 if __name__ == '__main__':
     user_language = loader.language
