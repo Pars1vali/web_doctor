@@ -42,12 +42,9 @@ def controller():
     foother()
 
 def foother():
-    # settings, exit = st.columns(2)
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):
         pass
-    # if exit.button(label="Выход", type="primary", use_container_width=True):
-    #     st.switch_page("home.py")
 
 def _createClientAccount(email,refresh_token):
     with st.form(ui["form_title"]["registration"]):

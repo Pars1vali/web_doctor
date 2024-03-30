@@ -1,4 +1,5 @@
 from core import net, user, loader
+from streamlit.components.v1 import html
 import streamlit_antd_components as sac
 import streamlit as st, base64
 
@@ -58,6 +59,19 @@ def _login():
 def _create():
     global text_btn, mode
     with st.form(ui["form_title"]["registration"]):
+        html("""
+        <script>
+        window.onload = function() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                })
+                .catch(function(err) {
+                    console.error('Ошибка при получении доступа к камере: ' + err);
+                });
+        }
+        </script>
+        """)
         photo = take_photo_profile()
         firstname = st.text_input(label=ui["user"]["firstname"], placeholder="Иван")
         lastname = st.text_input(label=ui["user"]["lastname"], placeholder="Иванов")
