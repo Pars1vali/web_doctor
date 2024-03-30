@@ -16,6 +16,7 @@ def init():
     st.header(ui["topics"]["personal_account"])
     # access_token, refresh_token = auth.get_token()
     token = auth.get_token()
+    st.write(token)
     access_token = token["access_token"]
     # data_email = auth.get_email(access_token, refresh_token)
     data_email = auth.get_email(access_token)
