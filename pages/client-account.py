@@ -12,11 +12,24 @@ def load_resourses(file_style,file_localization, file_images ):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
+
+def show_client_info(client_info):
+    try:
+        data_client = json.loads(client_info)
+        st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
+        annotated_text((f"{data_client[5]}", "Почта", "#afa"))
+        annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
+        show_doctor_info(data_client[4])
+        # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
+    except Exception as e:
+        print(e)
+        st.warning("Ошибка загрузки данных аккаунта")
+
+
 def init():
     st.header(ui["topics"]["personal_account"])
     # access_token, refresh_token = auth.get_token()
     token = auth.get_token()
-    st.write(token)
     access_token = token["access_token"]
     # data_email = auth.get_email(access_token, refresh_token)
     data_email = auth.get_email(access_token)
@@ -25,18 +38,12 @@ def init():
         response = net.Client.login_account(email)
         if(response == 'false'):
             st.info(ui["info"]["first_registration"])
-            _createClientAccount(email, token["refresh_token"])
+            is_created_account = _createClientAccount(email, token["refresh_token"])
+            if is_created_account:
+                response = net.Client.login_account(email)
+                show_client_info(response)
         else:
-            try:
-                data_client = json.loads(response)
-                st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
-                annotated_text((f"{data_client[5]}", "Почта", "#afa"))
-                annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
-                show_doctor_info(data_client[4])
-                # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
-            except Exception as e:
-                print(e)
-                st.warning("Ошибка загрузки данных аккаунта")
+            show_client_info(response)
     controller()
 
 def show_doctor_info(doctor_id):
@@ -65,7 +72,7 @@ def _createClientAccount(email,refresh_token):
                 response = net.Client.create_account(
                     user.Client(firstname, lastname, surname, phone_number, int(doctor_id), email, str(refresh_token)))
                 if response == "true":
-                    st.write("Вошел")
+                    return True
                 elif response == "false":
                     st.error(ui["error"]["account_exists"])
             else:
