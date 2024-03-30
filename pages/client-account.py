@@ -1,6 +1,7 @@
 from core import loader, auth, net, user
 from annotated_text import annotated_text
 import streamlit as st, json
+import streamlit_antd_components as sac
 
 ui, ui_images = None, None
 
@@ -41,10 +42,10 @@ def controller():
     foother()
 
 def foother():
-    st.divider()
     # settings, exit = st.columns(2)
-    if st.button("Настройки", use_container_width=True):
-        st.switch_page("pages/settings.py")
+    sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
+    if st.button("Удалить аккаунт", type="primary", use_container_width=True):
+        pass
     # if exit.button(label="Выход", type="primary", use_container_width=True):
     #     st.switch_page("home.py")
 
