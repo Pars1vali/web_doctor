@@ -45,8 +45,7 @@ def show_client_info(client_info):
         st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
         annotated_text((f"{data_client[5]}", "Почта", "#afa"))
         annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
-        show_doctor_info(data_client[4])
-        # annotated_text((f"{data_client[4]}", "Врач", "#afa"))
+        show_doctor_info(int(data_client[4]))
     except Exception as e:
         print(e)
         st.warning("Ошибка загрузки данных аккаунта")
