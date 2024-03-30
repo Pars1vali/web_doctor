@@ -30,7 +30,7 @@ def init():
     foother()
 
 
-async def controller():
+def controller():
     date = str(st.date_input("Выберите дату", max_value=datetime.now()))
     st.write(date)
     mode = sac.segmented(
@@ -46,7 +46,7 @@ async def controller():
 
     match(mode):
         case 'Показатели':
-            await show_data(email, date)
+            show_data(email, date)
         case 'Аналитика':
             analitics(email, date)
         case 'Обращения':
@@ -69,7 +69,7 @@ def analitics(email, date):
     st.write(df.transpose())
 
 # @st.cache_resource
-async def show_data(email, date):
+def show_data(email, date):
     response_json = net.Doctor.get_client_data(email, date)
     response = json.loads(response_json)
     number_bucket_list = [number_bucket for number_bucket in response]
