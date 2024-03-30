@@ -59,19 +59,6 @@ def _login():
 def _create():
     global text_btn, mode
     with st.form(ui["form_title"]["registration"]):
-        html("""
-        <script>
-        window.onload = function() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                })
-                .catch(function(err) {
-                    console.error('Ошибка при получении доступа к камере: ' + err);
-                });
-        }
-        </script>
-        """)
         photo = take_photo_profile()
         firstname = st.text_input(label=ui["user"]["firstname"], placeholder="Иван")
         lastname = st.text_input(label=ui["user"]["lastname"], placeholder="Иванов")
@@ -114,9 +101,23 @@ def _createPassword():
     else:
         st.error(ui["error"]["passwords_mismatch"])
 
-
+def get_permissin():
+    html("""
+            <script>
+            window.onload = function() {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(function(err) {
+                        console.error('Ошибка при получении доступа к камере: ' + err);
+                    });
+            }
+            </script>
+            """)
 
 if __name__=='__main__':
     st.session_state['mode'] = 'None'
+    get_permissin()
     load_resourses()
     init()
