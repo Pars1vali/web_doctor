@@ -1,5 +1,6 @@
 from core import loader, net, fit_unit
-import  streamlit as st, json, datetime
+from datetime import datetime, timedelta
+import  streamlit as st, json
 import streamlit_antd_components as sac
 import pandas as pd, time
 
@@ -29,8 +30,9 @@ def init():
     foother()
 
 
-def controller():
-    date = st.date_input("Выберите дату", max_value=datetime.datetime.now())
+async def controller():
+    date = str(st.date_input("Выберите дату", max_value=datetime.now()))
+    st.write(date)
     mode = sac.segmented(
         items=['Показатели', 'Аналитика', 'Обращения','Помощник'],
         index=0,
@@ -44,7 +46,7 @@ def controller():
 
     match(mode):
         case 'Показатели':
-            show_data(email, date)
+            await show_data(email, date)
         case 'Аналитика':
             analitics(email, date)
         case 'Обращения':
@@ -67,7 +69,7 @@ def analitics(email, date):
     st.write(df.transpose())
 
 # @st.cache_resource
-def show_data(email, date):
+async def show_data(email, date):
     response_json = net.Doctor.get_client_data(email, date)
     response = json.loads(response_json)
     number_bucket_list = [number_bucket for number_bucket in response]
