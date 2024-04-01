@@ -1,3 +1,4 @@
+import datetime
 from random import random
 
 from core import loader, auth, net, user
@@ -16,6 +17,13 @@ def load_resourses(file_style,file_localization, file_images ):
 
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
+
+def get_client_id(response):
+    client_data = json.loads(response)
+    client_id = client_data[0]
+    return client_id
+
+
 
 def _createClientAccount(email,refresh_token):
     st.info(ui["info"]["first_registration"])
@@ -55,6 +63,7 @@ def show_photo(image):
     except Exception as e:
         print(e)
         st.info("Фотография профиля не загружена")
+
 def show_client_info(client_info):
     try:
         data_client = json.loads(client_info)
@@ -64,7 +73,7 @@ def show_client_info(client_info):
         print(e)
         st.warning("Ошибка загрузки данных аккаунта")
 def show_doctor_info(doctor_id):
-    doctor_info_json = net.Doctor.get_doctor_info(doctor_id)
+    doctor_info_json = net.Doctor.get_info(doctor_id)
     doctor_info = json.loads(doctor_info_json)
     with st.popover("Врач", use_container_width=True):
         st.markdown(f"{doctor_info[1]} {doctor_info[2]} {doctor_info[3]}")
@@ -89,57 +98,39 @@ def init():
         if(response == 'false'):
             create_account(email, token["refresh_token"])
         else:
-            show_client_info(response)
-            controller()
-def controller():
-    make_appeal()
+            controller(response)
+
+def controller(response):
+    show_client_info(response)
+    make_appeal(response)
     foother()
 
 
-def get_metrics_personal():
-    c1, c2 = st.columns(2)
-    c11 = c1.text_input("Измерение",key=f"kc11{random()}",value="")
-    c22 = c2.number_input("Значение",key=f"kc22{random()})",value=0)
-    return c11, c22
+def make_appeal(response):
+    client_id = get_client_id(response)
+    with st.expander("Сделать обращение врачу"):
+        info_box = st.container()
+        def take_photo():
+            image = info_box.camera_input("Фотография")
+            if image is not None:
+                image_bytes = image.read()
+                image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+                image_base64_str = str(image_base64)
+                return image_base64_str
 
+        image = take_photo()
+        topic = info_box.text_input("Тема обращения")
+        description = info_box.text_area("Описание")
 
-def make_appeal():
-    with st.form("ff"):
-        image = st.camera_input("Сделайте фотографию")
-        topic = st.text_input("Тема обращения")
-        description = st.text_area("Описание")
-        st.divider()
-        df = pd.DataFrame(
-            [
-                {"Измерние":"","Значение":""}
-            ]
-        )
-        df.index = range(1, len(df) + 1)
-        st.data_editor(df,use_container_width=True)
-        if st.form_submit_button("Послать врачу", use_container_width=True, type="primary"):pass
-    # if  st.button("Сделать обращение", use_container_width=True, type="primary"):
-    #     container_request_doctor = st.container(border=True)
-    #     image = container_request_doctor.camera_input("Сделайте фотографию")
-    #     topic = container_request_doctor.text_input("Тема обращения")
-    #     description = container_request_doctor.text_area("Описание")
-    #
-    #
-    #     if container_request_doctor.button("Послать врачу", use_container_width=True, type="primary"):
-    #         pass
+        if st.button("Отправить врачу", use_container_width=True, type="primary"):
+            datetime_now = datetime.datetime.now()
+            datetime_now_str = str(datetime_now)
+            response = net.Doctor.send_appeal(image, topic, description, datetime_now_str, client_id)
+            if response == "true":
+                st.info("Обращение доставленно доктору.")
+            else:
+                st.warning("Возникли ошибки при отправке. Сообщение не отправленно.")
 
-        # if container_request_doctor.button("Закрыть", use_container_width=True):
-        #     pass
-
-
-    # with st.popover("Обращение врачу", use_container_width=True):
-    #     # photo_container, text_container = st.columns(2)
-    #     # image = photo_container.camera_input("Сделайте фотографию")
-    #     # topic = text_container.text_input("Тема обращения")
-    #     # description =  text_container.text_area("Описание")
-    #     image = st.camera_input("Сделайте фотографию")
-    #     topic = st.text_input("Тема обращения")
-    #     description = st.text_area("Описание")
-    #     st.button("Послать врачу", use_container_width=True)
 def foother():
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):

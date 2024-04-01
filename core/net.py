@@ -25,6 +25,39 @@ class Client:
         response = requests.post(url, client.toJSON(), headers=headers)
         return response.text
 
+    @staticmethod
+    def get_id(doctor_id):
+        headers['X-Custom-Info'] = 'get_client'
+        data = {
+            "id": doctor_id
+        }
+        response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+
+    @staticmethod
+    @st.cache_resource
+    def get_data(email, date):
+        headers['X-Custom-Info'] = 'DATA_COLLECT'
+        data = {
+            "email": email,
+            "date": date
+        }
+        response = requests.post(url_fit, json.dumps(data), headers=headers)
+        return response.text
+
+    @staticmethod
+    def get_appeal(client_id, date):
+        headers['X-Custom-Info'] = 'APPEAL_GET'
+        data = {
+            "client_id": client_id,
+            "date": date
+        }
+        response = requests.post(url_fit, json.dumps(data), headers=headers)
+        return response.text
+
+
+
+
 class Doctor:
     global headers
     @staticmethod
@@ -46,30 +79,24 @@ class Doctor:
         return response.text
 
     @staticmethod
-    def get_client(id):
-        headers['X-Custom-Info'] = 'get_client'
-        data ={
-            "id": id
-        }
-        response = requests.post(url, json.dumps(data), headers=headers)
-        return response.text
-
-    @staticmethod
-    @st.cache_resource
-    def get_client_data(email, date):
-        headers['X-Custom-Info'] = 'DATA_COLLECT'
-        data = {
-            "email": email,
-            "date": date
-        }
-        response = requests.post(url_fit, json.dumps(data), headers=headers)
-        return response.text
-    @staticmethod
-    def get_doctor_info(doctor_id):
+    def get_info(doctor_id):
         headers['X-Custom-Info'] = 'DOCTOR_DATA_COLLECT'
         data = {
             "doctor_id": doctor_id
         }
         response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+
+    @staticmethod
+    def send_appeal(image, topic, description, date, client_id):
+        headers['X-Custom-Info'] = 'APPEAL_SEND'
+        data = {
+            "image": image,
+            "topic": topic,
+            "description": description,
+            "date": date,
+            "client_id": client_id
+        }
+        response = requests.post(url_fit, json.dumps(data), headers=headers)
         return response.text
 

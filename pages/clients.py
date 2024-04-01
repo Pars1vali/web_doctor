@@ -18,7 +18,7 @@ def load_clients():
         data_doctor_json = st.session_state.get("data_doctor")
         data_doctor = json.loads(data_doctor_json)
         doctor_id = data_doctor[0]
-        clients_data = net.Doctor.get_client(doctor_id)
+        clients_data = net.Client.get_id(doctor_id)
         return clients_data
     except Exception as e:
         return None
@@ -81,6 +81,7 @@ def show_clients():
             if st.button(label="Данные о здоровье", type="primary", key=f"{client[0]}", use_container_width=True):
                 # show_data(client[5])
                 st.session_state['email'] = client[5]
+                st.session_state['client_id'] = client[0]
                 st.switch_page("pages/analitic.py")
 
 def foother():
