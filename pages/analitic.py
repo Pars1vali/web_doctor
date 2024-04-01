@@ -116,12 +116,12 @@ def load_appeal(appeals_json):
                 image_box.image(image, use_column_width="auto")
             except Exception as e:
                 print(e)
-                appeal_box.info("Фотография профиля не загружена")
+                appeal_box.info("Фотография не загружена")
 
         with st.expander(f"{topics} - {time}"):
             appeal_box = st.container(border=True)
             _show_photo(appeal[1])
-            appeal_box.markdown(f"{appeal[3]}")
+            appeal_box.text(f"{appeal[3]}")
 
 
 def show_appeal(client_id, date):
