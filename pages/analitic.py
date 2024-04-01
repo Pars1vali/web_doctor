@@ -105,7 +105,8 @@ def show_points(points):
 def load_appeal(appeals_json):
     appeals = json.loads(appeals_json)
     for appeal in appeals:
-        topics, date = appeal[2], appeal[4]
+        topics, datetime = appeal[2], appeal[4]
+        time = datetime.split(" ")[1]
         def _show_photo(image):
             try:
                 image_box = appeal_box.container()
@@ -117,10 +118,10 @@ def load_appeal(appeals_json):
                 print(e)
                 appeal_box.info("Фотография профиля не загружена")
 
-        with st.expander(f"{topics} - {date}"):
+        with st.expander(f"{topics} - {time}"):
             appeal_box = st.container(border=True)
             _show_photo(appeal[1])
-            appeal_box.markdown(f"Текст обращение - {appeal[3]}")
+            appeal_box.markdown(f"{appeal[3]}")
 
 
 def show_appeal(client_id, date):
