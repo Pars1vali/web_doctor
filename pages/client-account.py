@@ -1,9 +1,12 @@
+from random import random
+
 from core import loader, auth, net, user
 from annotated_text import annotated_text
 from PIL import Image
 from io import BytesIO
-import streamlit as st, json, io
+import streamlit as st, json, io, pandas as pd
 import streamlit_antd_components as sac, base64
+from streamlit_extras.metric_cards import style_metric_cards
 
 ui, ui_images = None, None
 
@@ -51,13 +54,11 @@ def show_photo(image):
         image_container.image(image, use_column_width="auto")
     except Exception as e:
         print(e)
-        st.info("Фотографии профиля не загружена")
+        st.info("Фотография профиля не загружена")
 def show_client_info(client_info):
     try:
         data_client = json.loads(client_info)
         st.title(f"{data_client[2]} {data_client[1]} {data_client[3]}")
-        annotated_text((f"{data_client[5]}", "Почта", "#afa"))
-        annotated_text((f"{data_client[6]}", "Номер телефона", "#afa"))
         show_doctor_info(int(data_client[4]))
     except Exception as e:
         print(e)
@@ -65,7 +66,8 @@ def show_client_info(client_info):
 def show_doctor_info(doctor_id):
     doctor_info_json = net.Doctor.get_doctor_info(doctor_id)
     doctor_info = json.loads(doctor_info_json)
-    with st.expander(f"Врач - {doctor_info[1]} {doctor_info[2]} {doctor_info[3]}"):
+    with st.popover("Врач", use_container_width=True):
+        st.markdown(f"{doctor_info[1]} {doctor_info[2]} {doctor_info[3]}")
         show_photo(doctor_info[12])
         annotated_text((f"{doctor_info[11]}", "Возраст", "#afa"))
         annotated_text((f"{doctor_info[5]}", "Организация", "#afa"))
@@ -93,13 +95,51 @@ def controller():
     make_appeal()
     foother()
 
+
+def get_metrics_personal():
+    c1, c2 = st.columns(2)
+    c11 = c1.text_input("Измерение",key=f"kc11{random()}",value="")
+    c22 = c2.number_input("Значение",key=f"kc22{random()})",value=0)
+    return c11, c22
+
+
 def make_appeal():
-    with st.popover("Обращение врачу", use_container_width=True):
-        photo_container, text_container = st.columns(2)
-        image = photo_container.camera_input("Сделайте фотографию")
-        topic = text_container.text_input("Тема обращения")
-        description =  text_container.text_area("Описание")
-        st.button("Послать врачу", use_container_width=True)
+    with st.form("ff"):
+        image = st.camera_input("Сделайте фотографию")
+        topic = st.text_input("Тема обращения")
+        description = st.text_area("Описание")
+        st.divider()
+        df = pd.DataFrame(
+            [
+                {"Измерние":"","Значение":""}
+            ]
+        )
+        df.index = range(1, len(df) + 1)
+        st.data_editor(df,use_container_width=True)
+        if st.form_submit_button("Послать врачу", use_container_width=True, type="primary"):pass
+    # if  st.button("Сделать обращение", use_container_width=True, type="primary"):
+    #     container_request_doctor = st.container(border=True)
+    #     image = container_request_doctor.camera_input("Сделайте фотографию")
+    #     topic = container_request_doctor.text_input("Тема обращения")
+    #     description = container_request_doctor.text_area("Описание")
+    #
+    #
+    #     if container_request_doctor.button("Послать врачу", use_container_width=True, type="primary"):
+    #         pass
+
+        # if container_request_doctor.button("Закрыть", use_container_width=True):
+        #     pass
+
+
+    # with st.popover("Обращение врачу", use_container_width=True):
+    #     # photo_container, text_container = st.columns(2)
+    #     # image = photo_container.camera_input("Сделайте фотографию")
+    #     # topic = text_container.text_input("Тема обращения")
+    #     # description =  text_container.text_area("Описание")
+    #     image = st.camera_input("Сделайте фотографию")
+    #     topic = st.text_input("Тема обращения")
+    #     description = st.text_area("Описание")
+    #     st.button("Послать врачу", use_container_width=True)
 def foother():
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
     if st.button("Удалить аккаунт", type="primary", use_container_width=True):
