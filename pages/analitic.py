@@ -1,10 +1,11 @@
 from PIL import Image
 from core import loader, net, fit_unit
 from datetime import datetime, timedelta
+from streamlit_extras.metric_cards import style_metric_cards
 import base64, io
 import  streamlit as st, json
 import streamlit_antd_components as sac
-import pandas as pd, time
+import pandas as pd, time, re
 
 
 ui, ui_images = None, None
@@ -60,18 +61,20 @@ def controller():
 
     match(mode):
         case 'Показатели':
-            show_data(email, date)
+            metrics(email, date)
         case 'Аналитика':
-            show_analitics(email, date)
+            analitics(email, date)
         case 'Обращения':
-            show_appeal(client_id, date)
+            appeal(client_id, date)
         case 'Помощник':
             ai_helper()
 
 def ai_helper():
     pass
+
+
 # @st.cache_resource(experimental_allow_widgets=True)
-def show_analitics(email, date):
+def analitics(email, date):
     try:
         response = net.Client.get_data(email, date)
         df = pd.read_json(response).fillna(0).transpose()
@@ -83,31 +86,43 @@ def show_analitics(email, date):
         st.write(df.transpose())
     except Exception as e:
         st.info("Данных за это время не собрано.")
+
+
 # @st.cache_resource
-def show_data(email, date):
+def metrics(email, date):
+
+    def _metrics_show(metrics):
+        for name in metrics:
+            metric_name, metric_value, metric_unit = fit_unit.FitUnit.get_data_unit(name, metrics[name])
+            st.metric(label=f"{metric_name}", value=f"{metric_value}", delta=metric_unit, delta_color="off")
+            style_metric_cards(border_color="#65C368", border_left_color="#65C368", box_shadow=False)
+
     response_json = net.Client.get_data(email, date)
     response = json.loads(response_json)
-    number_bucket_list = [number_bucket for number_bucket in response]
-    tabs = st.tabs(number_bucket_list)
-    for number_bucket in response:
-        with tabs[int(number_bucket)]:
-            points = response[number_bucket]
-            if(len(points)>0):
-                show_points(points)
+    metrics_list = [metrics for metrics in response]
+    tabs = st.tabs(metrics_list)
+    for metrics_number in response:
+        with tabs[int(metrics_number)]:
+            metric = response[metrics_number]
+            if(len(metric)>0):
+                _metrics_show(metric)
             else:
                 st.subheader("Данных за это время не собрано")
-def show_points(points):
-    for num, point in enumerate(points):
-        point_name, point_value, point_metric = fit_unit.FitUnit.get_data_unit(point, points[point])
-        st.metric(label=f"{point_name}", value=f"{point_value}")#, delta=point_metric)
 
 
-def load_appeal(appeals_json):
-    appeals = json.loads(appeals_json)
+def appeal(client_id, date):
+    try:
+        response_json = net.Client.get_appeal(client_id, date)
+        response = json.loads(response_json)
+        _appeal_show(response)
+    except Exception as e:
+        print(e)
+        st.warning("Произошла ошибка загрузки данных")
+
+def _appeal_show(appeals):
     for appeal in appeals:
-        topics, datetime = appeal[2], appeal[4]
-        time = datetime.split(" ")[1]
-        def _show_photo(image):
+
+        def _photo_show(image):
             try:
                 image_box = appeal_box.container()
                 image_str = image[2:-1]
@@ -118,19 +133,31 @@ def load_appeal(appeals_json):
                 print(e)
                 appeal_box.info("Фотография не загружена")
 
+        def _metrics_search(text):
+            pattern = r"[а-я]* \d+\.?\d+?"
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            for i in range(int(len(matches)/2)):
+                metric_first = matches[i].split(" ")
+                metric_second = matches[i + 1].split(" ")
+                _metric_show(metric_first, metric_second)
+
+            if len(matches)%2 != 0:
+                _metric_show(matches[len(matches)-1].split(" "), None)
+
+        def _metric_show(metric_first, metric_second:None):
+                col_first, col_second = appeal_box.columns(2)
+                col_first.metric(label=metric_first[0], value=metric_first[1])
+                if metric_second is not None:
+                    col_second.metric(label=metric_second[0], value=metric_second[1])
+                style_metric_cards(border_color="#65C368", border_left_color="#65C368", box_shadow=False)
+
+        topics, datetime = appeal[2], appeal[4]
+        time = datetime.split(" ")[1]
         with st.expander(f"{topics} - {time}"):
             appeal_box = st.container(border=True)
-            _show_photo(appeal[1])
+            _photo_show(appeal[1])
             appeal_box.text(f"{appeal[3]}")
-
-
-def show_appeal(client_id, date):
-    try:
-        response = net.Client.get_appeal(client_id, date)
-        load_appeal(response)
-    except Exception as e:
-        print(e)
-        st.warning("Произошла ошибка загрузки данных")
+            _metrics_search(appeal[3])
 
 
 def foother():
