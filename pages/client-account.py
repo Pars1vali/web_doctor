@@ -133,7 +133,10 @@ def make_appeal(response):
 
 def foother():
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
-    if st.button("Удалить аккаунт", type="primary", use_container_width=True):
+    exit, remove_account = st.columns(2)
+    if exit.button("Выйти", use_container_width=True):
+        st.switch_page("home.py")
+    if remove_account.button("Удалить аккаунт", type="primary", use_container_width=True):
         pass
 
 if __name__ == '__main__':
