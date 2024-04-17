@@ -1,7 +1,7 @@
 from core import loader, net, fit_unit
 from annotated_text import annotated_text
 from PIL import Image
-import streamlit as st, json, base64, io
+import streamlit as st, json, base64, io, time
 
 ui, ui_images = None, None
 clients = None
@@ -37,6 +37,8 @@ def controller():
         show_clients()
     else:
         st.info("Сессеия разорвна. Пожалуйста перезайдите.")
+        time.sleep(2)
+        st.switch_page("home.py")
     st.divider()
     foother()
 
@@ -69,7 +71,7 @@ def show_clients():
             image = Image.open(io.BytesIO(image_data))
             image_container.image(image, use_column_width="auto")
         except Exception as e:
-            print(e)
+            print(e)#
             image_container.info("Фотография не загружена")
 
     st.header("Клиенты")
