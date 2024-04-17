@@ -104,13 +104,20 @@ def metrics(email, date):
     response = json.loads(response_json)
     metrics_list = [metrics for metrics in response]
     tabs = st.tabs(metrics_list)
-    for metrics_number in response:
-        with tabs[int(metrics_number)]:
-            metric = response[metrics_number]
-            if(len(metric)>0):
-                _metrics_show(metric)
-            else:
-                st.subheader("Данных за это время не собрано")
+    try:
+        for metrics_number in response:
+            with tabs[int(metrics_number)]:
+                metric = response[metrics_number]
+                if(len(metric)>0):
+                    _metrics_show(metric)
+                else:
+                    st.subheader("Данных за это время не собрано")
+    except Exception as e:
+        print(e)
+        st.warning("Сеанс разорван. Перезайдите...")
+        time.sleep(2)
+        st.switch_page("home.py")
+
 
 
 def appeal(client_id, date):
