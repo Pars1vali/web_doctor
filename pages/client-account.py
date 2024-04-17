@@ -1,13 +1,8 @@
-import datetime
-from random import random
-
 from core import loader, auth, net, user
 from annotated_text import annotated_text
 from PIL import Image
-from io import BytesIO
-import streamlit as st, json, io, pandas as pd
-import streamlit_antd_components as sac, base64
-from streamlit_extras.metric_cards import style_metric_cards
+import streamlit as st, json, io
+import streamlit_antd_components as sac, base64, datetime
 
 ui, ui_images = None, None
 
@@ -26,19 +21,27 @@ def get_client_id(response):
 
 
 def _createClientAccount(email,refresh_token):
+    def _take_photo_profile():
+        image = st.camera_input("Фото профиля")
+        if image is not None:
+            image_bytes = image.read()
+            image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+            return image_base64
+
     st.info(ui["info"]["first_registration"])
     with st.form(ui["form_title"]["registration"]):
+        photo = _take_photo_profile()
         firstname = st.text_input(label=ui["user"]["firstname"])
         lastname = st.text_input(label=ui["user"]["lastname"])
         surname = st.text_input(label=ui["user"]["surname"])
         phone_number = st.text_input(label=ui["user"]["phone_number"])
         doctor_id = st.text_input(label=ui["user"]["doctor_id"])
 
-        all_fields = all([firstname, lastname, surname, phone_number, doctor_id])
+        all_fields = all([firstname, lastname, surname, phone_number, doctor_id, photo])
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
             if all_fields:
                 response = net.Client.create_account(
-                    user.Client(firstname, lastname, surname, phone_number, int(doctor_id), email, str(refresh_token)))
+                    user.Client(firstname, lastname, surname, phone_number, int(doctor_id), email, str(refresh_token), str(photo)))
                 if response == "true":
                     return True
                 elif response == "false":

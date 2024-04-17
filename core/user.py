@@ -23,7 +23,7 @@ class Doctor:
 
 
 class Client:
-    def __init__(self, firstname, lastname, surname, phone_number, doctor_id, email, refresh_token):
+    def __init__(self, firstname, lastname, surname, phone_number, doctor_id, email, refresh_token, photo):
         self.firstname = firstname
         self.lastname = lastname
         self.surname = surname
@@ -31,6 +31,7 @@ class Client:
         self.doctor_id = doctor_id
         self.email = email
         self.refresh_token = refresh_token
+        self.photo = photo
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
