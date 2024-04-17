@@ -61,11 +61,14 @@ def controller():
 
     match(mode):
         case 'Показатели':
-            metrics(email, date)
+            with st.spinner("Загрузка измерений..."):
+                metrics(email, date)
         case 'Аналитика':
-            analitics(email, date)
+            with st.spinner("Анализируем..."):
+                analitics(email, date)
         case 'Обращения':
-            appeal(client_id, date)
+            with st.spinner("Загрузка обращений..."):
+                appeal(client_id, date)
         case 'Помощник':
             ai_helper()
 

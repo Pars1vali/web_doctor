@@ -44,8 +44,8 @@ def controller():
 
 def _login():
     with st.form(ui["form_title"]["login"]):
-        login = st.text_input(label=ui["login"])
-        password = st.text_input(label=ui["password"], type="password", key="login_password")
+        login = st.text_input(label=ui["login"], placeholder="marina")
+        password = st.text_input(label=ui["password"], type="password", key="login_password", placeholder="1234")
 
         if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary", use_container_width=True)):
             response = net.Doctor.login_account(login, password)
