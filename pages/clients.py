@@ -1,6 +1,7 @@
 from core import loader, net, fit_unit
 from annotated_text import annotated_text
-import streamlit as st, json
+from PIL import Image
+import streamlit as st, json, base64, io
 
 ui, ui_images = None, None
 clients = None
@@ -60,6 +61,17 @@ def search_client(search_query):
         st.info("Не найдено")
 
 def show_clients():
+    def _show_client_photo(image):
+        try:
+            image_container = st.container(border=True)
+            image_str = image[2:-1]
+            image_data = base64.b64decode(image_str)
+            image = Image.open(io.BytesIO(image_data))
+            image_container.image(image, use_column_width="auto")
+        except Exception as e:
+            print(e)
+            image_container.info("Фотография не загружена")
+
     st.header("Клиенты")
     search = st.text_input(label="Найти", placeholder="Иванов Иван")
     if search is not None and search != "":
@@ -73,8 +85,7 @@ def show_clients():
     clients_data = json.loads(clients)
     for client in clients_data:
         with st.expander(f"{client[2]} {client[1]} {client[3]}"):
-            image_container = st.container(border=True)
-            image_container.image("experiment/doctor.png", width=200)
+            _show_client_photo(client[8])
             annotated_text((f"{client[5]}", "Почта", "#afa"))
             annotated_text((f"{client[6]}", "Номер телефона", "#afa"))
             # dt = st_ui.date_picker(key=f"{client[0]}", mode="single", label="Date Picker")
