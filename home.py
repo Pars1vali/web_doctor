@@ -1,17 +1,9 @@
 from core import loader
-from streamlit_javascript import st_javascript
-from user_agents import parse
 import streamlit as st
 
-ua_string = st_javascript("""window.navigator.userAgent;""")
-user_agent = parse(ua_string)
-if user_agent == True:
-    mode = "centered"
-else:
-    mode = "wide"
 st.set_page_config(page_icon="resources/images/icon.png",
                        page_title="Web doctor",
-                       layout=mode,
+                       layout="wide",
                        menu_items=None,
                        initial_sidebar_state="collapsed")
 
