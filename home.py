@@ -3,15 +3,18 @@ import streamlit as st
 
 ui, ui_images = None, None
 
-def load_resourses(file_style,file_localization, file_images ):
+st.set_page_config(page_icon="resources/images/icon.png",
+                   page_title="Web doctor",
+                   layout="wide",
+                   menu_items=None,
+                   initial_sidebar_state="collapsed")
+
+def load_resourses(file_style,file_localization, file_images):
     global ui, ui_images
     loader.set_resources(file_style, file_localization, file_images)
 
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
-
-
-
 
 def init():
     st.title(ui["topics"]["welcome"])
@@ -33,3 +36,4 @@ if __name__ == '__main__':
         file_localization=f"resources/ui/localization/localization_{user_language}.json",
         file_images="resources/ui/image.json")
     init()
+    
