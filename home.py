@@ -1,13 +1,23 @@
 from core import loader
+from streamlit_javascript import st_javascript
+from user_agents import parse
 import streamlit as st
+
+ua_string = st_javascript("""window.navigator.userAgent;""")
+user_agent = parse(ua_string)
+st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout="wide",
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
+if user_agent == True:
+    st.set_page_config(layout="centered")
+
+
 
 ui, ui_images = None, None
 
-st.set_page_config(page_icon="resources/images/icon.png",
-                   page_title="Web doctor",
-                   layout="wide",
-                   menu_items=None,
-                   initial_sidebar_state="collapsed")
+
 
 def load_resourses(file_style,file_localization, file_images):
     global ui, ui_images

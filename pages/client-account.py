@@ -4,8 +4,9 @@ from PIL import Image
 import streamlit as st, json, io
 import streamlit_antd_components as sac, base64, datetime
 
-ui, ui_images = None, None
 
+
+ui, ui_images = None, None
 def load_resourses(file_style,file_localization, file_images ):
     global ui, ui_images
     loader.set_resources(file_style, file_localization, file_images)
@@ -84,11 +85,13 @@ def init():
         if(response == 'false'):
             create_account(email, token["refresh_token"])
         else:
-            controller(response)
+            controller(response, email)
 
-def controller(response):
+def controller(response, email):
+    show_client_info(net.Client.login_account(email))
     make_appeal(response)
     foother()
+
 def show_doctor_info(doctor_id):
     doctor_info_json = net.Doctor.get_info(doctor_id)
     doctor_info = json.loads(doctor_info_json)
