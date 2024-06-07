@@ -1,5 +1,7 @@
 from core import loader
 import streamlit as st
+from streamlit_javascript import st_javascript
+from user_agents import parse
 
 st.set_page_config(page_icon="resources/images/icon.png",
                        page_title="Web doctor",
@@ -34,6 +36,12 @@ def init():
             st.switch_page("pages/doctor.py")
 
 if __name__ == '__main__':
+    ua_string = st_javascript("""window.navigator.userAgent;""")
+    user_agent = parse(ua_string)
+    if user_agent.is_pc == True:
+        st.session_state["mode_layout"] = "centered"
+    else:
+        st.session_state["mode_layout"] = "wide"
     user_language = "ru"
     load_resourses(
         file_style="resources/style/style.css",
