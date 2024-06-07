@@ -3,7 +3,7 @@ import streamlit as st
 
 st.set_page_config(page_icon="resources/images/icon.png",
                        page_title="Web doctor",
-                       layout="wide",
+                       layout="centered",
                        menu_items=None,
                        initial_sidebar_state="collapsed")
 
