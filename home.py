@@ -22,7 +22,16 @@ def load_resourses(file_style,file_localization, file_images):
     st.markdown(loader.load_styles(),unsafe_allow_html=True)
     ui, ui_images = loader.load_localization(), loader.load_images()
 
+def load_mode():
+    ua_string = st_javascript("""window.navigator.userAgent;""")
+    user_agent = parse(ua_string)
+    if user_agent.is_pc == True:
+        st.session_state["mode_layout"] = "centered"
+    else:
+        st.session_state["mode_layout"] = "wide"
+
 def init():
+    load_mode()
     st.title(ui["topics"]["welcome"])
     st.image(ui_images['main_icon'], width=320)
 
@@ -36,12 +45,6 @@ def init():
             st.switch_page("pages/doctor.py")
 
 if __name__ == '__main__':
-    ua_string = st_javascript("""window.navigator.userAgent;""")
-    user_agent = parse(ua_string)
-    if user_agent.is_pc == True:
-        st.session_state["mode_layout"] = "centered"
-    else:
-        st.session_state["mode_layout"] = "wide"
     user_language = "ru"
     load_resourses(
         file_style="resources/style/style.css",
