@@ -1,13 +1,16 @@
 /*{
     background-image: url("https://i.pinimg.com/564x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg");
 }*/
-/*.st-emotion-cache-18ni7ap{
+.st-emotion-cache-uzc3ty{
+    display: none;
+}
+.st-emotion-cache-18ni7ap{
     display: none;
 }
 .viewerBadge_link__qRIco{
     display: none;
 }
-.st-emotion-cache-1l9asas{
+/*.st-emotion-cache-1l9asas{
     color: rgb(255, 255, 255);
     background-color: rgb(101, 195, 104);
 }*/
@@ -29,7 +32,6 @@
     margin-bottom:3.5%;
 }
 .stMarkdown{
-    text-align:center;
     margin-bottom:2%;
 }
 .stMarkdown p{
