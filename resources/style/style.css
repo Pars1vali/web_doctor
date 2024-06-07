@@ -48,7 +48,9 @@
 .stHeadingContainer {
     margin-bottom:3.5%;
 }
-
+.a{
+    display: none;
+}
 .stMarkdown{
     margin-bottom:2%;
 }
