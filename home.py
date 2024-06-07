@@ -23,12 +23,17 @@ def load_resourses(file_style,file_localization, file_images):
     ui, ui_images = loader.load_localization(), loader.load_images()
 
 def load_mode():
-    ua_string = st_javascript("""window.navigator.userAgent;""")
-    user_agent = parse(ua_string)
-    if user_agent.is_pc == True:
+    try:
+        ua_string = st_javascript("""window.navigator.userAgent;""")
+        user_agent = parse(ua_string)
+        if user_agent.is_pc == True:
+            st.session_state["mode_layout"] = "centered"
+        else:
+            st.session_state["mode_layout"] = "wide"
+    except Exception as e:
+        print(e)
         st.session_state["mode_layout"] = "centered"
-    else:
-        st.session_state["mode_layout"] = "wide"
+
 
 def init():
     load_mode()
