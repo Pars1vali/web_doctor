@@ -4,6 +4,10 @@ from PIL import Image
 from io import BytesIO
 import streamlit as st, json, base64, io
 
+st.set_page_config(
+    layout=st.session_state["mode_layout"]
+)
+
 ui, ui_images = None, None
 
 def load_resourses():
