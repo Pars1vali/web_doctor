@@ -12,3 +12,4 @@ streamlit==1.35.0
 PyYAML==6.0.1
 ua-parser==0.18.0
 user-agents==2.2.0
+streamlit-javascript==0.1.5
