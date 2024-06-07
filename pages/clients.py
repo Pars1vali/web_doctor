@@ -2,6 +2,18 @@ from core import loader, net, fit_unit
 from annotated_text import annotated_text
 from PIL import Image
 import streamlit as st, json, base64, io, time
+try:
+    st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout=st.session_state["mode_layout"],
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
+except:
+    st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout="centered",
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
 
 ui, ui_images = None, None
 clients = None

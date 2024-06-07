@@ -4,6 +4,18 @@ from PIL import Image
 import streamlit as st, json, io
 import streamlit_antd_components as sac, base64, datetime
 
+try:
+    st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout=st.session_state["mode_layout"],
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
+except:
+    st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout="centered",
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
 
 
 ui, ui_images = None, None

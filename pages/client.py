@@ -1,12 +1,18 @@
 from core import loader, auth
 import streamlit as st
 
-st.set_page_config(page_icon="resources/images/icon.png",
+try:
+    st.set_page_config(page_icon="resources/images/icon.png",
                        page_title="Web doctor",
                        layout=st.session_state["mode_layout"],
                        menu_items=None,
                        initial_sidebar_state="collapsed")
-
+except:
+    st.set_page_config(page_icon="resources/images/icon.png",
+                       page_title="Web doctor",
+                       layout="centered",
+                       menu_items=None,
+                       initial_sidebar_state="collapsed")
 ui, ui_images = None, None
 
 def load_resourses():
