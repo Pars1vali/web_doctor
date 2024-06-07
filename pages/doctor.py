@@ -3,6 +3,10 @@ from streamlit.components.v1 import html
 import streamlit_antd_components as sac
 import streamlit as st, base64
 
+st.set_page_config(
+    layout=st.session_state["mode_layout"]
+)
+
 ui, ui_images = None, None
 
 def load_resourses():
@@ -44,7 +48,7 @@ def controller():
 
 def _login():
     with st.form(ui["form_title"]["login"]):
-        login = st.text_input(label=ui["login"], placeholder="marina")
+        login = st.text_input(label=ui["login"], placeholder="marina", key="login_name")
         password = st.text_input(label=ui["password"], type="password", key="login_password", placeholder="1234")
 
         if (st.form_submit_button(label=ui["button"]["login_account_btn"], type="primary", use_container_width=True)):
