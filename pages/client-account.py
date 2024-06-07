@@ -18,8 +18,6 @@ def get_client_id(response):
     client_id = client_data[0]
     return client_id
 
-
-
 def _createClientAccount(email,refresh_token):
     def _take_photo_profile():
         image = st.camera_input("Фото профиля")
@@ -54,7 +52,11 @@ def create_account(email, refresh_token):
         st.experimental_rerun()
         controller()
         show_client_info(net.Client.login_account(email))
-
+@st.experimental_dialog("Удалить аккаунт")
+def _delete_account():
+    st.write(f"Why is  your favorite?")
+    if st.button("Submit"):
+        st.switch_page("home.py")
 
 def show_photo(image):
     try:
@@ -67,6 +69,39 @@ def show_photo(image):
         print(e)
         st.info("Фотография профиля не загружена")
 
+
+
+
+def init():
+    st.header(ui["topics"]["personal_account"])
+    token = auth.get_token()
+    access_token = token["access_token"]
+    data_email = auth.get_email(access_token)
+    if data_email is not None:
+        email = data_email['email']
+        with st.spinner("Загрузка данных..."):
+            response = net.Client.login_account(email)
+        if(response == 'false'):
+            create_account(email, token["refresh_token"])
+        else:
+            controller(response)
+
+def controller(response):
+    make_appeal(response)
+    foother()
+def show_doctor_info(doctor_id):
+    doctor_info_json = net.Doctor.get_info(doctor_id)
+    doctor_info = json.loads(doctor_info_json)
+    with st.popover("Врач", use_container_width=True):
+        st.markdown(f"{doctor_info[1]} {doctor_info[2]} {doctor_info[3]}")
+        show_photo(doctor_info[12])
+        annotated_text((f"{doctor_info[10]}", "Возраст", "#afa"))
+        annotated_text((f"{doctor_info[5]}", "Организация", "#afa"))
+        annotated_text((f"{doctor_info[4]}", "Должность", "#afa"))
+        annotated_text((f"{doctor_info[11]}", "Стаж", "#afa"))
+        annotated_text((f"{doctor_info[8]}", "Почта", "#afa"))
+        annotated_text((f"{doctor_info[6]}", "Номер телефона", "#afa"))
+
 def show_client_info(client_info):
     try:
         data_client = json.loads(client_info)
@@ -75,39 +110,6 @@ def show_client_info(client_info):
     except Exception as e:
         print(e)
         st.warning("Ошибка загрузки данных аккаунта")
-def show_doctor_info(doctor_id):
-    doctor_info_json = net.Doctor.get_info(doctor_id)
-    doctor_info = json.loads(doctor_info_json)
-    with st.popover("Врач", use_container_width=True):
-        st.markdown(f"{doctor_info[1]} {doctor_info[2]} {doctor_info[3]}")
-        show_photo(doctor_info[12])
-        annotated_text((f"{doctor_info[11]}", "Возраст", "#afa"))
-        annotated_text((f"{doctor_info[5]}", "Организация", "#afa"))
-        annotated_text((f"{doctor_info[4]}", "Должность", "#afa"))
-        annotated_text((f"{doctor_info[10]}", "Стаж", "#afa"))
-        annotated_text((f"{doctor_info[8]}", "Почта", "#afa"))
-        annotated_text((f"{doctor_info[6]}", "Номер телефона", "#afa"))
-
-def init():
-    st.header(ui["topics"]["personal_account"])
-    # access_token, refresh_token = auth.get_token()
-    token = auth.get_token()
-    access_token = token["access_token"]
-    # data_email = auth.get_email(access_token, refresh_token)
-    data_email = auth.get_email(access_token)
-    if data_email is not None:
-        email = data_email['email']
-        response = net.Client.login_account(email)
-        if(response == 'false'):
-            create_account(email, token["refresh_token"])
-        else:
-            controller(response)
-
-def controller(response):
-    show_client_info(response)
-    make_appeal(response)
-    foother()
-
 
 def make_appeal(response):
     client_id = get_client_id(response)
@@ -140,7 +142,7 @@ def foother():
     if exit.button("Выйти", use_container_width=True):
         st.switch_page("home.py")
     if remove_account.button("Удалить аккаунт", type="primary", use_container_width=True):
-        pass
+        _delete_account()
 
 if __name__ == '__main__':
     user_language = loader.language
