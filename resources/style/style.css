@@ -48,6 +48,9 @@
 .stHeadingContainer {
     margin-bottom:3.5%;
 }
+.stHeading{
+    text-align: center;
+}
 .stMarkdown{
     margin-bottom:2%;
 }
