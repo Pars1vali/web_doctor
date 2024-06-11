@@ -13,14 +13,7 @@ st.set_page_config(page_icon="resources/images/icon.png",
 
 ui, ui_images = None, None
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            .viewerBadge_container__r5tak {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 def load_resourses(file_style,file_localization, file_images):
     global ui, ui_images
@@ -40,10 +33,19 @@ def load_mode():
     except Exception as e:
         print(e)
         st.session_state["mode_layout"] = "centered"
-
+def delete_logo():
+    hide_streamlit_style = """
+                <style>
+                #MainMenu {visibility: hidden;}
+                footer {visibility: hidden;}
+                .viewerBadge_container__r5tak {visibility: hidden;}
+                </style>
+                """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 def init():
     load_mode()
+    delete_logo()
     st.title(ui["topics"]["welcome"])
     st.image(ui_images['main_icon'], width=320)
 
