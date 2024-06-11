@@ -17,6 +17,9 @@
 .viewerBadge_link__qRIco{
     display: none;
 }
+h1{
+    text-align: center;
+}
 .stSidebar{
     display: none;
 }
