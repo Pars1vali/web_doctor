@@ -2,22 +2,27 @@
     background-image: url("https://i.pinimg.com/564x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg");
 }*/
 #MainMenu {visibility: hidden;}
+
 footer {visibility: hidden;}
 
 .button{
     display: none;
+    visibility: hidden;
 }
 .st-emotion-cache-1q36smj{
     display: none;
+    visibility: hidden;
 }
 .st-emotion-cache-12fmjuu{
     display: none;
+    visibility: hidden;
 }
 .styles_terminalButton__JBj5T{
     display: none;
+    visibility: hidden;
 }
 .viewerBadge_link__qRIco{
-    display: none;
+    visibility: hidden;
 }
 h1{
     text-align: center;
@@ -27,16 +32,20 @@ h2{
 }
 .stSidebar{
     display: none;
+    visibility: hidden;
 }
 
 .st-emotion-cache-uzc3ty{
     display: none;
+    visibility: hidden;
 }
 .st-emotion-cache-18ni7ap{
     display: none;
+    visibility: hidden;
 }
 .viewerBadge_link__qRIco{
     display: none;
+    visibility: hidden;
 }
 /*.st-emotion-cache-1l9asas{
     color: rgb(255, 255, 255);
@@ -45,12 +54,15 @@ h2{
 
 .st-emotion-cache-jw45d2{
     display: none;
+    visibility: hidden;
 }
 .stHeader{
     display: none;
+    visibility: hidden;
 }
 .viewerBadge_link__qRIco{
     display: none;
+    visibility: hidden;
 }
 
 .stHeadingContainer span{
@@ -61,6 +73,7 @@ h2{
 }
 .viewerBadge_link__qRIco{
     display: none;
+    visibility: hidden;
 }
 .stMarkdown{
     margin-bottom:2%;
@@ -91,6 +104,7 @@ h2{
 }
 .st-emotion-cache-vk3wp9{
     display: none;
+    visibility: hidden;
 }
 .st-emotion-cache-eqffof a {
     color: rgb(0 0 0);
