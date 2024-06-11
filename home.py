@@ -13,7 +13,13 @@ st.set_page_config(page_icon="resources/images/icon.png",
 
 ui, ui_images = None, None
 
-
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 def load_resourses(file_style,file_localization, file_images):
     global ui, ui_images
