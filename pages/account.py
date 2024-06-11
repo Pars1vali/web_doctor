@@ -59,7 +59,7 @@ def show_photo(image):
         image_str = image[2:-1]
         image_data = base64.b64decode(image_str)
         image = Image.open(io.BytesIO(image_data))
-        image_container.image(image, use_column_width="auto")
+        image_container.image(image, width=300)#, use_column_width="auto")
     except Exception as e:
         print(e)
         st.info("Фотографии профиля не загружена")

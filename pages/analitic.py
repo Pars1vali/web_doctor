@@ -166,7 +166,7 @@ def _appeal_show(appeals):
         with st.expander(f"{topics} - {time}"):
             appeal_box = st.container(border=True)
             _photo_show(appeal[1])
-            appeal_box.text(f"{appeal[3]}")
+            appeal_box.markdown(f"{appeal[3]}")
             _metrics_search(appeal[3])
 
 
