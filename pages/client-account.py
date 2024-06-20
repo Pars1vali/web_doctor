@@ -48,9 +48,10 @@ def _createClientAccount(email,refresh_token):
         phone_number = st.text_input(label=ui["user"]["phone_number"])
         doctor_id = st.text_input(label=ui["user"]["doctor_id"])
 
-        all_fields = all([firstname, lastname, surname, phone_number, doctor_id, photo])
+        all_fields = all([firstname, lastname, surname, phone_number, doctor_id])
         if st.form_submit_button(label=ui["button"]["crete_account_btn"], type="primary", use_container_width=True):
             if all_fields:
+
                 response = net.Client.create_account(
                     user.Client(firstname, lastname, surname, phone_number, int(doctor_id), email, str(refresh_token), str(photo)))
                 if response == "true":
