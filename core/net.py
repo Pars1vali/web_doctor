@@ -10,6 +10,17 @@ headers = {'Content-Type': 'application/json'}
 class Client:
     global headers
 
+
+    @staticmethod
+    def delete_account(client_id):
+        headers['X-Custom-Info'] = 'delete_client'
+        data = {
+            'client_id': client_id
+        }
+        response = requests.post(url, json.dumps(data), headers=headers)
+        return response.text
+
+    @st.cache_resource
     @staticmethod
     def login_account(email):
         headers['X-Custom-Info'] = 'login_client'

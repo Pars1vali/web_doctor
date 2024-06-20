@@ -66,10 +66,13 @@ def create_account(email, refresh_token):
         st.experimental_rerun()
         controller()
         show_client_info(net.Client.login_account(email))
+
 @st.experimental_dialog("Удалить аккаунт")
-def _delete_account():
-    st.write(f"Why is  your favorite?")
-    if st.button("Submit"):
+def _delete_account(response):
+    st.write("Вы точно уверены в этом, отменить это дейсвтие будет невозможно")
+    if st.button("Подтвердить"):
+        client_id = get_client_id(response)
+        net.Client.delete_account(client_id)
         st.switch_page("home.py")
 
 def show_photo(image):
@@ -103,7 +106,7 @@ def init():
 def controller(response, email):
     show_client_info(net.Client.login_account(email))
     make_appeal(response)
-    foother()
+    foother(response)
 
 def show_doctor_info(doctor_id):
     doctor_info_json = net.Doctor.get_info(doctor_id)
@@ -152,13 +155,13 @@ def make_appeal(response):
             else:
                 st.warning("Возникли ошибки при отправке. Сообщение не отправленно.")
 
-def foother():
+def foother(response):
     sac.divider(icon=sac.BsIcon(name='bi bi-trash', size=20), align='center', color='gray')
     exit, remove_account = st.columns(2)
     if exit.button("Выйти", use_container_width=True):
         st.switch_page("home.py")
     if remove_account.button("Удалить аккаунт", type="primary", use_container_width=True):
-        _delete_account()
+        _delete_account(response)
 
 if __name__ == '__main__':
     user_language = loader.language

@@ -64,12 +64,18 @@ def show_photo(image):
         print(e)
         st.info("Фотографии профиля не загружена")
 
+@st.experimental_dialog("Удалить аккаунт")
+def _delete_account():
+    st.write("Вы точно уверены в этом, отменить это дейсвтие будет невозможно")
+    if st.button("Подтвердить"):
+        st.switch_page("home.py")
+
 def foother():
     clients, remove_account = st.columns(2)
     if clients.button("Назад", use_container_width=True):
         st.switch_page("pages/clients.py")
     if remove_account.button("Удалить аккаунт", type="primary", use_container_width=True):
-        pass
+        _delete_account()
 
 if __name__=='__main__':
     load_resourses()
